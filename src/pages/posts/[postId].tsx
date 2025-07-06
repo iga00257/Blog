@@ -4,7 +4,7 @@ import { ObjectId } from 'mongodb';
 import { GetStaticProps } from 'next';
 import { MDXRemote, MDXRemoteSerializeResult } from 'next-mdx-remote';
 import { serialize } from 'next-mdx-remote/serialize';
-import Image from 'next/image';
+import Image from "next/legacy/image";
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
 import { ArrowLeft, Heart } from 'react-feather';
