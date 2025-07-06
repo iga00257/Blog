@@ -4,7 +4,7 @@ import { NextApiRequest, NextApiResponse } from 'next';
 import getMongoClient from '../../../../services/getMongoClient';
 import verifyJwt from '../../../../utils/verifyJwt';
 
-export default async function (req: NextApiRequest, res: NextApiResponse) {
+const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   const { postId } = req.query;
   if (!postId || typeof postId !== 'string') {
     res.status(400).json({ error: 'postId is required' });
@@ -17,7 +17,7 @@ export default async function (req: NextApiRequest, res: NextApiResponse) {
   switch (req.method) {
     case 'POST':
       const token = req.cookies.token;
-      const user = await verifyJwt(token);
+      const user = await verifyJwt(token || '');
       if (!user) {
         await mongo.close();
         res.status(401).json({ error: 'Unauthorized' });
@@ -60,7 +60,7 @@ export default async function (req: NextApiRequest, res: NextApiResponse) {
       try {
         let userLike = 0;
         const token = req.cookies.token;
-        const user = await verifyJwt(token);
+        const user = await verifyJwt(token || '');
         if (user) {
           userLike = await mongo
             .db('blog')
@@ -98,4 +98,6 @@ export default async function (req: NextApiRequest, res: NextApiResponse) {
         await mongo.close();
       }
   }
-}
+};
+
+export default handler;

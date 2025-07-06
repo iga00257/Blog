@@ -3,8 +3,8 @@ import { OAuth2Client } from 'google-auth-library';
 import jwt from 'jsonwebtoken';
 import { NextApiRequest, NextApiResponse } from 'next';
 
-import { GOOGLE_OAUTH_CLIENT_ID } from '../../config.client';
-import getMongoClient from '../../services/getMongoClient';
+import { GOOGLE_OAUTH_CLIENT_ID } from '@/constants/config.client';
+import getMongoClient from '@/services/getMongoClient';
 
 const JWT_SECRET = process.env.JWT_SECRET;
 

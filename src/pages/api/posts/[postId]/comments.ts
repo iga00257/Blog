@@ -5,7 +5,7 @@ import getComments from '../../../../services/getComments';
 import getMongoClient from '../../../../services/getMongoClient';
 import verifyJwt from '../../../../utils/verifyJwt';
 
-export default async function (req: NextApiRequest, res: NextApiResponse) {
+const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   const { postId } = req.query;
   if (!postId || typeof postId !== 'string') {
     res.status(400).json({ error: 'postId is required' });
@@ -16,7 +16,7 @@ export default async function (req: NextApiRequest, res: NextApiResponse) {
   switch (req.method) {
     case 'POST':
       const token = req.cookies.token;
-      const user = await verifyJwt(token);
+      const user = await verifyJwt(token || '');
       if (!user) {
         await mongo.close();
         res.status(401).json({ error: 'Unauthorized' });
@@ -47,4 +47,6 @@ export default async function (req: NextApiRequest, res: NextApiResponse) {
         res.status(404).json({ error: 'Post not found' });
       }
   }
-}
+};
+
+export default handler;
