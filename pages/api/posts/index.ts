@@ -1,5 +1,6 @@
-import { getPostsInMongo } from '../../../services/getPosts';
 import { NextApiRequest, NextApiResponse } from 'next';
+
+import { getPostsInMongo } from '../../../services/getPosts';
 
 export default async function (req: NextApiRequest, res: NextApiResponse) {
   switch (req.method) {

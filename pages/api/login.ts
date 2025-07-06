@@ -1,9 +1,10 @@
-import getMongoClient from '../../services/getMongoClient';
-import { GOOGLE_OAUTH_CLIENT_ID } from '../../config.client';
-import { NextApiRequest, NextApiResponse } from 'next';
+import axios from 'axios';
 import { OAuth2Client } from 'google-auth-library';
 import jwt from 'jsonwebtoken';
-import axios from 'axios';
+import { NextApiRequest, NextApiResponse } from 'next';
+
+import { GOOGLE_OAUTH_CLIENT_ID } from '../../config.client';
+import getMongoClient from '../../services/getMongoClient';
 
 const JWT_SECRET = process.env.JWT_SECRET;
 
@@ -31,7 +32,7 @@ export default async function (req: NextApiRequest, res: NextApiResponse) {
         });
         const payload = ticket.getPayload();
         if (!payload) {
-          res.status(400).json({ error: 'Invalid credential', });
+          res.status(400).json({ error: 'Invalid credential' });
           return;
         }
         user.googleId = payload['sub'];
@@ -48,15 +49,15 @@ export default async function (req: NextApiRequest, res: NextApiResponse) {
         const verify = await axios.post(
           'https://oauth2.googleapis.com/token',
           `client_id=${GOOGLE_OAUTH_CLIENT_ID}` +
-          `&client_secret=${googleAppSecret}` +
-          `&redirect_uri=https://${host}/api/login` +
-          '&grant_type=authorization_code' +
-          `&code=${code}`
+            `&client_secret=${googleAppSecret}` +
+            `&redirect_uri=https://${host}/api/login` +
+            '&grant_type=authorization_code' +
+            `&code=${code}`,
         );
 
         const getUserInfoRes = await axios.get(
           'https://www.googleapis.com/oauth2/v1/userinfo?alt=json',
-          { headers: { Authorization: 'Bearer ' + verify.data.access_token } }
+          { headers: { Authorization: 'Bearer ' + verify.data.access_token } },
         );
         user.googleId = getUserInfoRes.data.id;
         user.name = getUserInfoRes.data.name;
@@ -64,31 +65,27 @@ export default async function (req: NextApiRequest, res: NextApiResponse) {
         user.email = getUserInfoRes.data.email;
     }
     const mongo = await getMongoClient();
-    const find = await mongo.db('blog')
-      .collection('users').findOne({ googleID: user.googleId });
+    const find = await mongo.db('blog').collection('users').findOne({ googleID: user.googleId });
 
     if (find) {
       const token = jwt.sign(find, JWT_SECRET);
       await mongo.close();
-      res.setHeader('Set-Cookie',
-        `token=${token}; Path=/; Max-Age=${60 * 60 * 24 * 365}`);
+      res.setHeader('Set-Cookie', `token=${token}; Path=/; Max-Age=${60 * 60 * 24 * 365}`);
       res.setHeader('Content-Type', 'text/html');
       res.end(`<script>window.location.pathname = "${redirect}"</script>`);
       return;
     }
 
-    const insert = await mongo.db('blog')
-      .collection('users').insertOne({
-        googleID: user.googleId,
-        name: user.name,
-        avatarUrl: user.avatarUrl,
-        email: user.email,
-      });
+    const insert = await mongo.db('blog').collection('users').insertOne({
+      googleID: user.googleId,
+      name: user.name,
+      avatarUrl: user.avatarUrl,
+      email: user.email,
+    });
     user._id = insert.insertedId;
     const token = jwt.sign(user, JWT_SECRET);
     await mongo.close();
-    res.setHeader('Set-Cookie',
-      `token=${token}; Path=/; Max-Age=${60 * 60 * 24 * 365}`);
+    res.setHeader('Set-Cookie', `token=${token}; Path=/; Max-Age=${60 * 60 * 24 * 365}`);
     res.setHeader('Content-Type', 'text/html');
     res.end(`<script>window.location.pathname = "${redirect}"</script>`);
   } catch (err) {

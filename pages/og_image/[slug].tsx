@@ -1,9 +1,10 @@
-import arrayBufferToBuffer from "../../utils/arrayBufferToBuffer";
-import { getPostBySlug } from "../../services/getPost";
-import { GetServerSideProps } from "next";
-import { Canvas, GlobalFonts, Image, SKRSContext2D } from "@napi-rs/canvas";
-import { ServerResponse } from "http";
-import { COLORS } from "../../utils/colors";
+import { Canvas, GlobalFonts, Image, SKRSContext2D } from '@napi-rs/canvas';
+import { ServerResponse } from 'http';
+import { GetServerSideProps } from 'next';
+
+import { getPostBySlug } from '../../services/getPost';
+import arrayBufferToBuffer from '../../utils/arrayBufferToBuffer';
+import { COLORS } from '../../utils/colors';
 
 export default function () {
   return <div></div>;
@@ -12,7 +13,7 @@ export default function () {
 export const getServerSideProps: GetServerSideProps = async (context) => {
   const res = context.res;
   const slug = context.params?.slug;
-  if (typeof slug !== "string") {
+  if (typeof slug !== 'string') {
     res.statusCode = 404;
     return { props: {} };
   }
@@ -22,10 +23,10 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
 };
 
 async function generateImage(slug: string, res: ServerResponse) {
-  if (!GlobalFonts.has("NotoSansTC-Bold")) {
-    const font = await fetch("https://yual.in/NotoSansTC-Bold.otf");
+  if (!GlobalFonts.has('NotoSansTC-Bold')) {
+    const font = await fetch('https://yual.in/NotoSansTC-Bold.otf');
     const fontBuffer = arrayBufferToBuffer(await font.arrayBuffer());
-    GlobalFonts.register(fontBuffer, "NotoSansTC-Bold");
+    GlobalFonts.register(fontBuffer, 'NotoSansTC-Bold');
   }
 
   const post = await getPostBySlug(slug);
@@ -36,38 +37,35 @@ async function generateImage(slug: string, res: ServerResponse) {
   coverImage.src = coverBuffer;
   const description =
     content
-      .replace(/<[^>]+>/g, "")
+      .replace(/<[^>]+>/g, '')
       .slice(0, 80)
-      .trim() + " ...";
+      .trim() + ' ...';
   const WIDTH = 1200;
   const HEIGHT = 768;
   const canvas = new Canvas(WIDTH, HEIGHT);
-  const ctx = canvas.getContext("2d");
+  const ctx = canvas.getContext('2d');
   drawImageProp(ctx, coverImage, 0, 0, WIDTH, HEIGHT, 0.5, 0.5);
   ctx.fillStyle = COLORS.OVERLAY;
   ctx.fillRect(0, 0, WIDTH, HEIGHT);
   ctx.save();
   ctx.fillStyle = COLORS.WHITE;
-  ctx.font = "800 64px NotoSansTC-Bold";
-  printAt(ctx, "Yuanlin", 96, 180, 96, WIDTH, 64);
+  ctx.font = '800 64px NotoSansTC-Bold';
+  printAt(ctx, 'Yuanlin', 96, 180, 96, WIDTH, 64);
   ctx.fillStyle = COLORS.SECONDARY;
-  ctx.font = "800 48px NotoSansTC-Bold";
-  printAt(ctx, "Blog", 340, 180, 96, WIDTH, 48);
-  ctx.font = "800 64px NotoSansTC-Bold";
+  ctx.font = '800 48px NotoSansTC-Bold';
+  printAt(ctx, 'Blog', 340, 180, 96, WIDTH, 48);
+  ctx.font = '800 64px NotoSansTC-Bold';
   ctx.fillStyle = COLORS.WHITE;
 
   printAt(ctx, title, 96, HEIGHT / 2 - 64, 96, WIDTH - 192, 64);
-  ctx.font = "800 36px NotoSansTC-Bold";
+  ctx.font = '800 36px NotoSansTC-Bold';
   ctx.fillStyle = COLORS.OVERLAY_LIGHT;
   printAt(ctx, description, 96, HEIGHT - 200, 48, WIDTH - 192, 36);
   ctx.restore();
-  const buffer = await canvas.encode("png");
-  res.setHeader("Content-Type", "image/png");
-  res.setHeader("Content-Disposition", "inline");
-  res.setHeader(
-    "Cache-Control",
-    "public, s-maxage=86400, stale-while-revalidate=86400"
-  );
+  const buffer = await canvas.encode('png');
+  res.setHeader('Content-Type', 'image/png');
+  res.setHeader('Content-Disposition', 'inline');
+  res.setHeader('Cache-Control', 'public, s-maxage=86400, stale-while-revalidate=86400');
   res.end(buffer);
 }
 
@@ -83,7 +81,7 @@ function getStringWidth(text: string, fontSize: number) {
   return result;
 }
 
-/** print text on SKRSContext with wrapping */
+/** Print text on SKRSContext with wrapping */
 function printAt(
   context: SKRSContext2D,
   text: string,
@@ -91,7 +89,7 @@ function printAt(
   y: number,
   lineHeight: number,
   fitWidth: number,
-  fontSize: number
+  fontSize: number,
 ) {
   fitWidth = fitWidth || 0;
 
@@ -104,24 +102,14 @@ function printAt(
     const str = text.substring(0, idx);
     if (getStringWidth(str, fontSize) > fitWidth) {
       context.fillText(text.substring(0, idx - 1), x, y);
-      printAt(
-        context,
-        text.substring(idx - 1),
-        x,
-        y + lineHeight,
-        lineHeight,
-        fitWidth,
-        fontSize
-      );
+      printAt(context, text.substring(idx - 1), x, y + lineHeight, lineHeight, fitWidth, fontSize);
       return;
     }
   }
   context.fillText(text, x, y);
 }
 
-/**
- * https://stackoverflow.com/questions/21961839/simulation-background-size-cover-in-canvas
- **/
+/** https://stackoverflow.com/questions/21961839/simulation-background-size-cover-in-canvas */
 function drawImageProp(
   ctx: SKRSContext2D,
   img: Image,
@@ -130,7 +118,7 @@ function drawImageProp(
   w: number,
   h: number,
   offsetX: number,
-  offsetY: number
+  offsetY: number,
 ) {
   // keep bounds [0.0, 1.0]
   let ox = offsetX;

@@ -11,7 +11,7 @@ export function parseUser(data: User) {
   return {
     ...data,
     _id: data._id,
-    registeredAt: new Date(data.registeredAt)
+    registeredAt: new Date(data.registeredAt),
   };
 }
 

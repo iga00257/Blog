@@ -51,9 +51,9 @@
 
 ```css
 .my-component {
+  border: 1px solid var(--color-border);
   background-color: var(--color-bg-primary);
   color: var(--color-text-main);
-  border: 1px solid var(--color-border);
 }
 
 /* 深色模式會自動應用 */
@@ -71,7 +71,7 @@
 #### 在頁面中使用
 
 ```tsx
-import ThemeToggle from "../components/ThemeToggle";
+import ThemeToggle from '../components/ThemeToggle';
 
 export default function MyPage() {
   return (

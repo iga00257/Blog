@@ -1,13 +1,13 @@
-import { MongoClient, ObjectId } from "mongodb";
+import { MongoClient, ObjectId } from 'mongodb';
 
-const uri = process.env["MONGODB_URI_EXTERNAL"];
+const uri = process.env['MONGODB_URI_EXTERNAL'];
 
 const samplePosts = [
   {
-    title: "React 18 新特性解析",
-    slug: "react-18-features",
+    title: 'React 18 新特性解析',
+    slug: 'react-18-features',
     coverImageUrl:
-      "https://images.unsplash.com/photo-1633356122544-f134324a6cee?w=1200&h=600&fit=crop",
+      'https://images.unsplash.com/photo-1633356122544-f134324a6cee?w=1200&h=600&fit=crop',
     content: `
 # React 18 新特性解析
 
@@ -37,14 +37,14 @@ root.render(
   React 18 需要配合新的 createRoot API 使用。
 </Note>
     `,
-    createdAt: new Date("2024-01-15"),
-    updatedAt: new Date("2024-01-15"),
+    createdAt: new Date('2024-01-15'),
+    updatedAt: new Date('2024-01-15'),
   },
   {
-    title: "TypeScript 進階技巧",
-    slug: "typescript-advanced-tips",
+    title: 'TypeScript 進階技巧',
+    slug: 'typescript-advanced-tips',
     coverImageUrl:
-      "https://images.unsplash.com/photo-1516116216624-53e697fedbea?w=1200&h=600&fit=crop",
+      'https://images.unsplash.com/photo-1516116216624-53e697fedbea?w=1200&h=600&fit=crop',
     content: `
 # TypeScript 進階技巧
 
@@ -70,14 +70,14 @@ type NonNullable<T> = T extends null | undefined ? never : T;
   掌握這些概念將大大提升你的 TypeScript 技能。
 </Note>
     `,
-    createdAt: new Date("2024-01-20"),
-    updatedAt: new Date("2024-01-20"),
+    createdAt: new Date('2024-01-20'),
+    updatedAt: new Date('2024-01-20'),
   },
 ];
 
 async function insertSamplePosts() {
   if (!uri) {
-    console.error("MONGODB_URI_EXTERNAL 環境變量未設置");
+    console.error('MONGODB_URI_EXTERNAL 環境變量未設置');
     process.exit(1);
   }
 
@@ -85,16 +85,16 @@ async function insertSamplePosts() {
 
   try {
     await client.connect();
-    console.log("已連接到 MongoDB");
+    console.log('已連接到 MongoDB');
 
-    const db = client.db("blog");
-    const collection = db.collection("posts");
+    const db = client.db('blog');
+    const collection = db.collection('posts');
 
     const existingCount = await collection.countDocuments();
     console.log(`數據庫中已有 ${existingCount} 篇文章`);
 
     if (existingCount > 0) {
-      console.log("數據庫中已有文章，跳過插入示例文章");
+      console.log('數據庫中已有文章，跳過插入示例文章');
       return;
     }
 
@@ -106,15 +106,15 @@ async function insertSamplePosts() {
     const result = await collection.insertMany(postsToInsert);
     console.log(`成功插入 ${result.insertedCount} 篇示例文章`);
 
-    console.log("\n插入的文章列表：");
+    console.log('\n插入的文章列表：');
     for (const post of postsToInsert) {
       console.log(`- ${post.title} (slug: ${post.slug})`);
     }
   } catch (error) {
-    console.error("插入文章時發生錯誤:", error);
+    console.error('插入文章時發生錯誤:', error);
   } finally {
     await client.close();
-    console.log("已關閉數據庫連接");
+    console.log('已關閉數據庫連接');
   }
 }
 

@@ -1,6 +1,7 @@
-import { getPostsInMongo } from '../services/getPosts';
 import { GetServerSideProps } from 'next';
 import React from 'react';
+
+import { getPostsInMongo } from '../services/getPosts';
 
 const Sitemap: React.FC = () => null;
 

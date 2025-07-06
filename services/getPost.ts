@@ -1,6 +1,7 @@
-import getMongoClient from './getMongoClient';
-import Post from '../models/post';
 import { ObjectId } from 'mongodb';
+
+import Post from '../models/post';
+import getMongoClient from './getMongoClient';
 
 export async function getPostBySlug(slug: string): Promise<Post> {
   const client = await getMongoClient();
@@ -10,9 +11,8 @@ export async function getPostBySlug(slug: string): Promise<Post> {
 
     return {
       ...find,
-      _id: find?._id.toHexString()
+      _id: find?._id.toHexString(),
     } as Post;
-
   } finally {
     await client.close();
   }
@@ -25,7 +25,7 @@ async function getPost(postId: string): Promise<Post> {
     const find = await collection.findOne({ _id: new ObjectId(postId) });
     return {
       ...find,
-      _id: find?._id.toHexString()
+      _id: find?._id.toHexString(),
     } as Post;
   } finally {
     await client.close();

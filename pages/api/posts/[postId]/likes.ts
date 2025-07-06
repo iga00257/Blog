@@ -1,7 +1,8 @@
+import { ObjectId } from 'mongodb';
+import { NextApiRequest, NextApiResponse } from 'next';
+
 import getMongoClient from '../../../../services/getMongoClient';
 import verifyJwt from '../../../../utils/verifyJwt';
-import { NextApiRequest, NextApiResponse } from 'next';
-import { ObjectId } from 'mongodb';
 
 export default async function (req: NextApiRequest, res: NextApiResponse) {
   const { postId } = req.query;
@@ -23,7 +24,9 @@ export default async function (req: NextApiRequest, res: NextApiResponse) {
         return;
       }
       try {
-        const count = await mongo.db('blog').collection('likes')
+        const count = await mongo
+          .db('blog')
+          .collection('likes')
           .countDocuments({
             userId: new ObjectId(user._id),
             postId: postObjectId,
@@ -33,16 +36,19 @@ export default async function (req: NextApiRequest, res: NextApiResponse) {
           res.status(200).json({ message: 'Already liked 10 times' });
           return;
         }
-        await mongo.db('blog').collection('likes').insertOne({
-          userId: new ObjectId(user._id),
-          postId: postObjectId,
-          likedAt: new Date(),
-        });
+        await mongo
+          .db('blog')
+          .collection('likes')
+          .insertOne({
+            userId: new ObjectId(user._id),
+            postId: postObjectId,
+            likedAt: new Date(),
+          });
         await mongo.close();
         res.status(201).json({
           userId: user._id,
           postId: postObjectId,
-          count: count + 1
+          count: count + 1,
         });
       } catch (err) {
         console.error(err);
@@ -56,24 +62,27 @@ export default async function (req: NextApiRequest, res: NextApiResponse) {
         const token = req.cookies.token;
         const user = await verifyJwt(token);
         if (user) {
-          userLike = await mongo.db('blog').collection('likes')
+          userLike = await mongo
+            .db('blog')
+            .collection('likes')
             .countDocuments({
               userId: new ObjectId(user._id),
               postId: postObjectId,
             });
         }
 
-        const find = mongo.db('blog').collection('likes')
-          .find({ postId: postObjectId });
+        const find = mongo.db('blog').collection('likes').find({ postId: postObjectId });
         const likes = await find.toArray();
 
-        const likeUserIds = likes.map(like => like.userId);
+        const likeUserIds = likes.map((like) => like.userId);
 
-        const users = await mongo.db('blog').collection('users')
+        const users = await mongo
+          .db('blog')
+          .collection('users')
           .find({ _id: { $in: likeUserIds } })
           .toArray();
 
-        const userAvatars = users.map(user => user.avatarUrl);
+        const userAvatars = users.map((user) => user.avatarUrl);
 
         await mongo.close();
 

@@ -1,22 +1,23 @@
-import Post, { parsePost, serializePost } from "../../models/post";
-import getPost, { getPostBySlug } from "../../services/getPost";
-import PageHead from "../../components/PageHead";
-import SocialLinks from "../../components/SocialLinks";
-import { useSession } from "../../src/session";
-import { GOOGLE_OAUTH_CLIENT_ID } from "../../config.client";
-import { getPostsInMongo } from "../../services/getPosts";
-import Comment from "../../models/comment";
-import getComments from "../../services/getComments";
-import { useEffect, useState } from "react";
-import { serialize } from "next-mdx-remote/serialize";
-import { MDXRemote, MDXRemoteSerializeResult } from "next-mdx-remote";
-import { GetStaticProps } from "next";
-import Link from "next/link";
-import cx from "classnames";
-import { ArrowLeft, Heart } from "react-feather";
-import { Avatar, useToasts } from "@geist-ui/core";
-import Image from "next/image";
-import { ObjectId } from "mongodb";
+import { Avatar, useToasts } from '@geist-ui/core';
+import cx from 'classnames';
+import { ObjectId } from 'mongodb';
+import { GetStaticProps } from 'next';
+import { MDXRemote, MDXRemoteSerializeResult } from 'next-mdx-remote';
+import { serialize } from 'next-mdx-remote/serialize';
+import Image from 'next/image';
+import Link from 'next/link';
+import { useEffect, useState } from 'react';
+import { ArrowLeft, Heart } from 'react-feather';
+
+import PageHead from '../../components/PageHead';
+import SocialLinks from '../../components/SocialLinks';
+import { GOOGLE_OAUTH_CLIENT_ID } from '../../config.client';
+import Comment from '../../models/comment';
+import Post, { parsePost, serializePost } from '../../models/post';
+import getComments from '../../services/getComments';
+import getPost, { getPostBySlug } from '../../services/getPost';
+import { getPostsInMongo } from '../../services/getPosts';
+import { useSession } from '../../src/session';
 
 interface PageProps {
   post: Post;
@@ -39,24 +40,24 @@ export default function (props: PageProps) {
 
   const [comments, setComments] = useState<Comment[]>(props.comments);
 
-  const [commentInput, setCommentInput] = useState("");
+  const [commentInput, setCommentInput] = useState('');
 
   async function submitComment() {
     if (!commentInput) return;
     try {
       const res = await fetch(`/api/posts/${postId}/comments`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ content: commentInput }),
       });
       if (res.status === 201) {
-        setCommentInput("");
+        setCommentInput('');
         await refresh();
       }
     } catch (e) {
       toast.setToast({
-        text: "發生錯誤，暫時無法留言！",
-        type: "error",
+        text: '發生錯誤，暫時無法留言！',
+        type: 'error',
       });
     }
   }
@@ -68,13 +69,13 @@ export default function (props: PageProps) {
   async function refresh() {
     if (!postId) return;
     try {
-      const likes = await fetch("/api/posts/" + postId + "/likes");
+      const likes = await fetch('/api/posts/' + postId + '/likes');
       const likesData = await likes.json();
       setLikes(likesData);
-      const posts = await fetch("/api/posts");
+      const posts = await fetch('/api/posts');
       const postsData = await posts.json();
       setPosts(postsData.map((p: Post) => parsePost(p)));
-      const comments = await fetch("/api/posts/" + postId + "/comments");
+      const comments = await fetch('/api/posts/' + postId + '/comments');
       const commentsData = await comments.json();
       setComments(commentsData);
     } catch (err) {
@@ -84,10 +85,10 @@ export default function (props: PageProps) {
 
   function login() {
     window.location.href =
-      "https://accounts.google.com/o/oauth2/v2/auth" +
-      "?response_type=code" +
+      'https://accounts.google.com/o/oauth2/v2/auth' +
+      '?response_type=code' +
       `&client_id=${GOOGLE_OAUTH_CLIENT_ID}` +
-      "&scope=openid%20email%20https://www.googleapis.com/auth/userinfo.profile" +
+      '&scope=openid%20email%20https://www.googleapis.com/auth/userinfo.profile' +
       `&redirect_uri=https://${window.location.host}/api/login&state=/posts/${post.slug}`;
   }
 
@@ -104,9 +105,9 @@ export default function (props: PageProps) {
             ...o,
             likeCount: o.likeCount + 1,
             userLike: o.userLike + 1,
-          }
+          },
     );
-    await fetch("/api/posts/" + postId + "/likes", { method: "POST" });
+    await fetch('/api/posts/' + postId + '/likes', { method: 'POST' });
   }
 
   useEffect(() => {
@@ -118,71 +119,59 @@ export default function (props: PageProps) {
       }
     }
 
-    window.addEventListener("scroll", handleScroll);
+    window.addEventListener('scroll', handleScroll);
     return () => {
-      window.removeEventListener("scroll", handleScroll);
+      window.removeEventListener('scroll', handleScroll);
     };
   }, []);
 
   return (
-    <div className="bg-white dark:bg-dark-bg text-text-primary dark:text-dark-text-primary transition-colors duration-300">
+    <div className='bg-white text-text-primary transition-colors duration-300 dark:bg-dark-bg dark:text-dark-text-primary'>
       <PageHead
         canonicalUrl={`https://yual.in/posts/${post.slug}`}
-        title={(post ? post.title : "Blog") + "| Derrick Liu 劉穎多"}
-        type="article"
+        title={(post ? post.title : 'Blog') + '| Derrick Liu 劉穎多'}
+        type='article'
         imageUrl={`https://yual.in/og_image/${post.slug}`}
-        description={post?.content.substring(0, 100) + "..."}
+        description={post?.content.substring(0, 100) + '...'}
       />
       <div
         className={cx(
-          "w-full lg:w-64 fixed top-0 px-4",
-          "flex flex-row justify-between lg:flex-col",
-          "py-2 lg:p-6 bg-white lg:bg-opacity-0 z-50 transition",
-          !shouldHideWhiteLogo && "bg-opacity-0"
+          'fixed top-0 w-full px-4 lg:w-64',
+          'flex flex-row justify-between lg:flex-col',
+          'z-50 bg-white py-2 transition lg:bg-opacity-0 lg:p-6',
+          !shouldHideWhiteLogo && 'bg-opacity-0',
         )}
       >
-        <Link href="/" scroll>
-          <div
-            className="font-extrabold text-xl lg:text-3xl
-        mb-0 cursor-pointer flex flex-row lg:flex-col items-baseline"
-          >
+        <Link href='/' scroll>
+          <div className='mb-0 flex cursor-pointer flex-row items-baseline text-xl font-extrabold lg:flex-col lg:text-3xl'>
             <p
               className={cx(
-                "mr-2 z-50 transition duration-1000",
-                shouldHideWhiteLogo ? "text-black" : "text-white"
+                'z-50 mr-2 transition duration-1000',
+                shouldHideWhiteLogo ? 'text-black' : 'text-white',
               )}
             >
               Derrick Liu
             </p>
-            <p className="text-lg text-primary">Blog</p>
+            <p className='text-lg text-primary'>Blog</p>
           </div>
         </Link>
-        <SocialLinks color={shouldHideWhiteLogo ? "black" : "white"} />
+        <SocialLinks color={shouldHideWhiteLogo ? 'black' : 'white'} />
       </div>
-      <div
-        className="w-full lg:h-[46rem] h-[32rem] overflow-hidden
-         relative flex justify-center"
-      >
+      <div className='relative flex h-[32rem] w-full justify-center overflow-hidden lg:h-[46rem]'>
         <Image
-          layout="fill"
-          objectFit="cover"
+          layout='fill'
+          objectFit='cover'
           src={post?.coverImageUrl}
-          className="absolute top-0 w-full h-full object-cover bg-zinc-500"
-          alt=""
+          className='absolute top-0 h-full w-full bg-zinc-500 object-cover'
+          alt=''
         />
-        <div
-          className="w-full h-full absolute top-0 right-0
-         bg-black bg-opacity-60"
-        />
-        <div
-          className="w-full px-4
-         lg:w-[650px] mx-auto absolute lg:bottom-24 bottom-12"
-        >
+        <div className='absolute top-0 right-0 h-full w-full bg-black bg-opacity-60' />
+        <div className='absolute bottom-12 mx-auto w-full px-4 lg:bottom-24 lg:w-[650px]'>
           {!post ? (
             <TitleSkeleton />
           ) : (
             <p
-              className="text-white text-3xl lg:text-5xl font-extrabold drop-shadow-lg"
+              className='text-3xl font-extrabold text-white drop-shadow-lg lg:text-5xl'
               style={{ lineHeight: 1.5 }}
             >
               {post?.title}
@@ -192,49 +181,40 @@ export default function (props: PageProps) {
           {!post ? (
             <AuthorSkeleton />
           ) : (
-            <div className="flex flex-row align-bottom mt-4">
+            <div className='mt-4 flex flex-row align-bottom'>
               <img
-                src="https://lh3.googleusercontent.com/a/ACg8ocLrYjvD01l_M0ZX5DWrnQD-5g36lsVf3upMBetPWTd8jzgvfQmg=s96-c"
-                className="rounded-full h-8 w-8 mr-4"
-                alt=""
+                src='https://lh3.googleusercontent.com/a/ACg8ocLrYjvD01l_M0ZX5DWrnQD-5g36lsVf3upMBetPWTd8jzgvfQmg=s96-c'
+                className='mr-4 h-8 w-8 rounded-full'
+                alt=''
               />
-              <p
-                className="text-white lg:text-xl
-             font-extrabold opacity-80 drop-shadow-md"
-              >
+              <p className='font-extrabold text-white opacity-80 drop-shadow-md lg:text-xl'>
                 Derrick Liu 劉穎多
               </p>
-              <p className="text-white lg:text-xl ml-2 lg:ml-8 opacity-60 drop-shadow-md">
-                {new Date(post?.createdAt).toISOString().split("T")[0]}
+              <p className='ml-2 text-white opacity-60 drop-shadow-md lg:ml-8 lg:text-xl'>
+                {new Date(post?.createdAt).toISOString().split('T')[0]}
               </p>
             </div>
           )}
         </div>
       </div>
-      <div className="w-full lg:w-[650px] px-7 mx-auto min-h-screen pb-32">
-        <div id="article" className="my-16">
+      <div className='mx-auto min-h-screen w-full px-7 pb-32 lg:w-[650px]'>
+        <div id='article' className='my-16'>
           {!post && <ArticleSkeleton />}
           <MDXRemote {...mdxSource} />
         </div>
 
         {likes && (
-          <div className="overflow-hidden">
-            <div
-              onClick={handleLike}
-              className="group flex items-center
-        cursor-pointer"
-            >
+          <div className='overflow-hidden'>
+            <div onClick={handleLike} className='group flex cursor-pointer items-center'>
               <Heart
-                fill="currentColor"
+                fill='currentColor'
                 fillOpacity={likes.userLike / 10 || 0}
-                color="currentColor"
-                className="group-active:scale-125 transition text-accent"
+                color='currentColor'
+                className='text-accent transition group-active:scale-125'
               />
-              {likes.likeCount && (
-                <p className="text-accent ml-4 mr-6">{likes.likeCount}</p>
-              )}
+              {likes.likeCount && <p className='ml-4 mr-6 text-accent'>{likes.likeCount}</p>}
               {likes.likeCount === 0 && (
-                <p className="text-accent ml-4 mr-6">給這篇文章一個愛心吧！</p>
+                <p className='ml-4 mr-6 text-accent'>給這篇文章一個愛心吧！</p>
               )}
               <Avatar.Group>
                 {likes.userAvatars?.map((avatar, index) => (
@@ -246,39 +226,32 @@ export default function (props: PageProps) {
         )}
       </div>
 
-      <div className="w-full py-16 bg-zinc-50 dark:bg-dark-bg-secondary">
-        <div className="w-full lg:w-[650px] px-4 mx-auto">
-          <p
-            className="font-extrabold opacity-60 mb-4 text-text-secondary dark:text-dark-text-secondary
-              text-center md:text-left"
-          >
+      <div className='w-full bg-zinc-50 py-16 dark:bg-dark-bg-secondary'>
+        <div className='mx-auto w-full px-4 lg:w-[650px]'>
+          <p className='mb-4 text-center font-extrabold text-text-secondary opacity-60 dark:text-dark-text-secondary md:text-left'>
             分享你的看法
           </p>
           <div
-            className={`flex w-full gap-4 items-center my-8 
-            ${!session.session ? "opacity-50 cursor-pointer" : ""}`}
+            className={`my-8 flex w-full items-center gap-4 ${!session.session ? 'cursor-pointer opacity-50' : ''}`}
           >
             {session.session ? (
               <img
                 src={session.session?.avatarUrl}
-                alt="author-avatar"
-                className="w-8 h-8 rounded-full"
+                alt='author-avatar'
+                className='h-8 w-8 rounded-full'
               />
             ) : (
-              <div className="w-8 h-8 rounded-full bg-gray-200 dark:bg-dark-bg-tertiary" />
+              <div className='h-8 w-8 rounded-full bg-gray-200 dark:bg-dark-bg-tertiary' />
             )}
             <input
-              className={`rounded-lg border-gray-200 dark:border-dark-border border px-4 py-2 flex-grow 
-              bg-white dark:bg-dark-bg-secondary text-text-primary dark:text-dark-text-primary
-              ${!session.session ? "cursor-pointer" : ""}`}
-              placeholder={session.session ? "" : "點擊即可登入並留言"}
+              className={`flex-grow rounded-lg border border-gray-200 bg-white px-4 py-2 text-text-primary dark:border-dark-border dark:bg-dark-bg-secondary dark:text-dark-text-primary ${!session.session ? 'cursor-pointer' : ''}`}
+              placeholder={session.session ? '' : '點擊即可登入並留言'}
               onClick={() => !session.session && login()}
               value={commentInput}
               onChange={(e) => setCommentInput(e.target.value)}
             />
             <button
-              className="bg-primary hover:bg-primary-dark text-white rounded-lg px-4 py-2
-              rounded-lg shrink-0 transition-colors duration-200"
+              className='shrink-0 rounded-lg bg-primary px-4 py-2 text-white transition-colors duration-200 hover:bg-primary-dark'
               onClick={() => (!session.session ? login() : submitComment())}
             >
               留言
@@ -286,65 +259,51 @@ export default function (props: PageProps) {
           </div>
 
           {comments?.map((comment, index) => (
-            <div
-              key={index}
-              className="flex flex-col gap-4 my-8 overflow-x-hidden"
-            >
-              <div className="flex items-center gap-4">
+            <div key={index} className='my-8 flex flex-col gap-4 overflow-x-hidden'>
+              <div className='flex items-center gap-4'>
                 <img
                   src={comment.author.avatarUrl}
-                  alt="author-avatar"
-                  className="w-8 h-8 rounded-full"
+                  alt='author-avatar'
+                  className='h-8 w-8 rounded-full'
                 />
-                <p className="font-extrabold text-text-primary dark:text-dark-text-primary">
+                <p className='font-extrabold text-text-primary dark:text-dark-text-primary'>
                   {comment.author.name}
                 </p>
-                <p className="opacity-60 text-text-secondary dark:text-dark-text-secondary">
-                  {comment.createdAt.split("T")[0]}
+                <p className='text-text-secondary opacity-60 dark:text-dark-text-secondary'>
+                  {comment.createdAt.split('T')[0]}
                 </p>
               </div>
-              <p className="text-text-primary dark:text-dark-text-primary">
-                {comment.content}
-              </p>
+              <p className='text-text-primary dark:text-dark-text-primary'>{comment.content}</p>
             </div>
           ))}
 
           {comments && comments.length === 0 && (
-            <p className="text-center opacity-60 text-text-secondary dark:text-dark-text-secondary">
+            <p className='text-center text-text-secondary opacity-60 dark:text-dark-text-secondary'>
               暫無留言，你可以成為第一個留言的人！
             </p>
           )}
         </div>
       </div>
 
-      <div className="w-full pb-32 pt-16 bg-zinc-100 dark:bg-dark-bg-tertiary">
-        <div className="w-full lg:w-[650px] px-4 mx-auto">
-          <div className="flex items-center mt-12 flex-col md:flex-row">
+      <div className='w-full bg-zinc-100 pb-32 pt-16 dark:bg-dark-bg-tertiary'>
+        <div className='mx-auto w-full px-4 lg:w-[650px]'>
+          <div className='mt-12 flex flex-col items-center md:flex-row'>
             <img
-              src="https://lh3.googleusercontent.com/a/ACg8ocLrYjvD01l_M0ZX5DWrnQD-5g36lsVf3upMBetPWTd8jzgvfQmg=s96-c?v=4"
-              alt="author-avatar"
-              className="w-24 h-24 rounded-full"
+              src='https://lh3.googleusercontent.com/a/ACg8ocLrYjvD01l_M0ZX5DWrnQD-5g36lsVf3upMBetPWTd8jzgvfQmg=s96-c?v=4'
+              alt='author-avatar'
+              className='h-24 w-24 rounded-full'
             />
-            <div className="ml-0 mt-12 md:ml-12 md:mt-0">
-              <p
-                className="font-extrabold opacity-60 mb-4 text-text-secondary dark:text-dark-text-secondary
-              text-center md:text-left"
-              >
+            <div className='ml-0 mt-12 md:ml-12 md:mt-0'>
+              <p className='mb-4 text-center font-extrabold text-text-secondary opacity-60 dark:text-dark-text-secondary md:text-left'>
                 關於作者
               </p>
-              <p
-                className="font-extrabold text-2xl text-text-primary dark:text-dark-text-primary
-              text-center md:text-left"
-              >
+              <p className='text-center text-2xl font-extrabold text-text-primary dark:text-dark-text-primary md:text-left'>
                 Derrick Liu 劉穎多
               </p>
-              <p
-                className="mt-6 mb-12 opacity-70 text-text-secondary dark:text-dark-text-secondary
-              text-center md:text-left"
-              >
+              <p className='mt-6 mb-12 text-center text-text-secondary opacity-70 dark:text-dark-text-secondary md:text-left'>
                 台灣新竹人，目前是全端開發工程師，熱愛產品設計與軟體開發。
               </p>
-              <div className="flex justify-center md:justify-start">
+              <div className='flex justify-center md:justify-start'>
                 <SocialLinks />
               </div>
             </div>
@@ -353,9 +312,9 @@ export default function (props: PageProps) {
       </div>
 
       {posts && posts.length > 0 && (
-        <div className="w-full pb-32 pt-16 bg-zinc-200 dark:bg-dark-bg">
-          <div className="w-full lg:w-[650px] px-4 mx-auto">
-            <p className="mb-16 font-extrabold text-center md:text-left text-text-primary dark:text-dark-text-primary">
+        <div className='w-full bg-zinc-200 pb-32 pt-16 dark:bg-dark-bg'>
+          <div className='mx-auto w-full px-4 lg:w-[650px]'>
+            <p className='mb-16 text-center font-extrabold text-text-primary dark:text-dark-text-primary md:text-left'>
               你可能也會喜歡
             </p>
             {posts
@@ -363,46 +322,31 @@ export default function (props: PageProps) {
               .sort(() => Math.random() - 0.5)
               .slice(0, 5)
               .map((p) => (
-                <Link key={p._id} href="/posts/[postId]" as={`/posts/${p._id}`}>
-                  <div
-                    className="mb-12 flex flex-col md:flex-row
-              cursor-pointer group"
-                  >
+                <Link key={p._id} href='/posts/[postId]' as={`/posts/${p._id}`}>
+                  <div className='group mb-12 flex cursor-pointer flex-col md:flex-row'>
                     <img
                       src={p.coverImageUrl}
                       alt={p.title}
-                      className="w-full md:w-48 h-48 object-cover mr-8 rounded-lg
-                   group-hover:scale-105 transition-all duration-500"
+                      className='mr-8 h-48 w-full rounded-lg object-cover transition-all duration-500 group-hover:scale-105 md:w-48'
                     />
-                    <div className="flex-1 mt-4 md:mt-0">
-                      <p
-                        className="font-extrabold text-xl text-text-primary dark:text-dark-text-primary
-                  group-hover:translate-x-2 transition-all duration-700"
-                      >
+                    <div className='mt-4 flex-1 md:mt-0'>
+                      <p className='text-xl font-extrabold text-text-primary transition-all duration-700 group-hover:translate-x-2 dark:text-dark-text-primary'>
                         {p.title}
                       </p>
-                      <p
-                        className="opacity-40 my-4 group-hover:translate-x-4 text-text-secondary dark:text-dark-text-secondary
-                   transition-all duration-1000 font-extrabold"
-                      >
+                      <p className='my-4 font-extrabold text-text-secondary opacity-40 transition-all duration-1000 group-hover:translate-x-4 dark:text-dark-text-secondary'>
                         {p.createdAt.toLocaleDateString()}
                       </p>
-                      <p
-                        className="lg:opacity-80 group-hover:opacity-100 text-text-primary dark:text-dark-text-primary
-                  transition-all"
-                      >
+                      <p className='text-text-primary transition-all group-hover:opacity-100 dark:text-dark-text-primary lg:opacity-80'>
                         {p.content}
                       </p>
                     </div>
                   </div>
                 </Link>
               ))}
-            <Link href="/" scroll>
-              <div className="flex cursor-pointer">
-                <ArrowLeft className="mr-4" />
-                <p className="text-text-primary dark:text-dark-text-primary">
-                  回部落格首頁
-                </p>
+            <Link href='/' scroll>
+              <div className='flex cursor-pointer'>
+                <ArrowLeft className='mr-4' />
+                <p className='text-text-primary dark:text-dark-text-primary'>回部落格首頁</p>
               </div>
             </Link>
           </div>
@@ -410,11 +354,11 @@ export default function (props: PageProps) {
       )}
 
       <div
-        id="g_id_onload"
-        data-auto_select="true"
-        data-skip_prompt_cookie="token"
+        id='g_id_onload'
+        data-auto_select='true'
+        data-skip_prompt_cookie='token'
         data-client_id={GOOGLE_OAUTH_CLIENT_ID}
-        data-login_uri={"/api/login?url=/posts/" + postId}
+        data-login_uri={'/api/login?url=/posts/' + postId}
       />
     </div>
   );
@@ -422,10 +366,10 @@ export default function (props: PageProps) {
 
 function AuthorSkeleton() {
   return (
-    <div className="flex flex-row align-bottom mt-8 items-center">
-      <div className="rounded-full h-8 w-8 mr-4 animate-pulse bg-zinc-500 dark:bg-dark-bg-tertiary" />
-      <div className="bg-zinc-600 dark:bg-dark-bg-secondary w-64 mr-4 animate-pulse h-6 rounded-lg" />
-      <div className="bg-zinc-700 dark:bg-dark-bg-tertiary w-36 animate-pulse h-6 rounded-lg" />
+    <div className='mt-8 flex flex-row items-center align-bottom'>
+      <div className='mr-4 h-8 w-8 animate-pulse rounded-full bg-zinc-500 dark:bg-dark-bg-tertiary' />
+      <div className='mr-4 h-6 w-64 animate-pulse rounded-lg bg-zinc-600 dark:bg-dark-bg-secondary' />
+      <div className='h-6 w-36 animate-pulse rounded-lg bg-zinc-700 dark:bg-dark-bg-tertiary' />
     </div>
   );
 }
@@ -433,11 +377,8 @@ function AuthorSkeleton() {
 function TitleSkeleton() {
   return (
     <div>
-      <div className="bg-zinc-600 dark:bg-dark-bg-secondary animate-pulse w-full h-8 lg:h-14 rounded-xl" />
-      <div
-        className="bg-zinc-600 dark:bg-dark-bg-secondary mt-4 animate-pulse
-    w-1/2 h-8 lg:h-14 rounded-xl"
-      />
+      <div className='h-8 w-full animate-pulse rounded-xl bg-zinc-600 dark:bg-dark-bg-secondary lg:h-14' />
+      <div className='mt-4 h-8 w-1/2 animate-pulse rounded-xl bg-zinc-600 dark:bg-dark-bg-secondary lg:h-14' />
     </div>
   );
 }
@@ -445,17 +386,17 @@ function TitleSkeleton() {
 function ArticleSkeleton() {
   return (
     <div>
-      <div className="bg-zinc-200 dark:bg-dark-bg-secondary animate-pulse w-full h-4 rounded-lg" />
-      <div className="bg-zinc-200 dark:bg-dark-bg-secondary mt-4 animate-pulse w-1/2 h-4 rounded-lg" />
-      <div className="bg-zinc-200 dark:bg-dark-bg-secondary mt-4 animate-pulse w-1/3 h-4 rounded-lg" />
-      <div className="bg-zinc-200 dark:bg-dark-bg-secondary mt-4 animate-pulse w-full h-4 rounded-lg" />
-      <div className="bg-zinc-200 dark:bg-dark-bg-secondary mt-4 animate-pulse w-1/4 h-4 rounded-lg" />
-      <div className="bg-zinc-300 dark:bg-dark-bg-tertiary animate-pulse w-full h-8 my-16 rounded-lg" />
-      <div className="bg-zinc-200 dark:bg-dark-bg-secondary animate-pulse w-full h-4 rounded-lg" />
-      <div className="bg-zinc-200 dark:bg-dark-bg-secondary mt-4 animate-pulse w-1/2 h-4 rounded-lg" />
-      <div className="bg-zinc-200 dark:bg-dark-bg-secondary mt-4 animate-pulse w-1/3 h-4 rounded-lg" />
-      <div className="bg-zinc-200 dark:bg-dark-bg-secondary mt-4 animate-pulse w-full h-4 rounded-lg" />
-      <div className="bg-zinc-200 dark:bg-dark-bg-secondary mt-4 animate-pulse w-1/4 h-4 rounded-lg" />
+      <div className='h-4 w-full animate-pulse rounded-lg bg-zinc-200 dark:bg-dark-bg-secondary' />
+      <div className='mt-4 h-4 w-1/2 animate-pulse rounded-lg bg-zinc-200 dark:bg-dark-bg-secondary' />
+      <div className='mt-4 h-4 w-1/3 animate-pulse rounded-lg bg-zinc-200 dark:bg-dark-bg-secondary' />
+      <div className='mt-4 h-4 w-full animate-pulse rounded-lg bg-zinc-200 dark:bg-dark-bg-secondary' />
+      <div className='mt-4 h-4 w-1/4 animate-pulse rounded-lg bg-zinc-200 dark:bg-dark-bg-secondary' />
+      <div className='my-16 h-8 w-full animate-pulse rounded-lg bg-zinc-300 dark:bg-dark-bg-tertiary' />
+      <div className='h-4 w-full animate-pulse rounded-lg bg-zinc-200 dark:bg-dark-bg-secondary' />
+      <div className='mt-4 h-4 w-1/2 animate-pulse rounded-lg bg-zinc-200 dark:bg-dark-bg-secondary' />
+      <div className='mt-4 h-4 w-1/3 animate-pulse rounded-lg bg-zinc-200 dark:bg-dark-bg-secondary' />
+      <div className='mt-4 h-4 w-full animate-pulse rounded-lg bg-zinc-200 dark:bg-dark-bg-secondary' />
+      <div className='mt-4 h-4 w-1/4 animate-pulse rounded-lg bg-zinc-200 dark:bg-dark-bg-secondary' />
     </div>
   );
 }
@@ -465,13 +406,13 @@ export async function getStaticPaths() {
   const paths = posts.map((p) => ({ params: { postId: p.slug } }));
   return {
     paths,
-    fallback: "blocking",
+    fallback: 'blocking',
   };
 }
 
 export const getStaticProps: GetStaticProps = async (context) => {
   const postId = context.params?.postId;
-  if (typeof postId !== "string") return { notFound: true };
+  if (typeof postId !== 'string') return { notFound: true };
   if (!postId.match(/^[a-f\d]{24}$/i)) {
     try {
       const post = await getPostBySlug(postId);
@@ -482,7 +423,7 @@ export const getStaticProps: GetStaticProps = async (context) => {
       const mdxSource = await serialize(post.content, {
         mdxOptions: { development: false },
       });
-      console.log("static props comments", comments);
+      console.log('static props comments', comments);
       return {
         revalidate: 10,
         props: {
@@ -492,7 +433,7 @@ export const getStaticProps: GetStaticProps = async (context) => {
           mdxSource,
           comments: comments.map((c) => {
             c._id = c._id.toHexString();
-            c.userId = "";
+            c.userId = '';
             c.postId = c.postId.toHexString();
             c.createdAt = c.createdAt.toISOString();
             c.author._id = c.author._id.toHexString();
@@ -509,7 +450,7 @@ export const getStaticProps: GetStaticProps = async (context) => {
     const post = await getPost(postId);
     return {
       redirect: {
-        destination: "/posts/" + post.slug,
+        destination: '/posts/' + post.slug,
         permanent: true,
       },
     };

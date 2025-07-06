@@ -67,7 +67,7 @@ interface Post {
 ````markdown
 ```javascript
 function hello() {
-  console.log("Hello, World!");
+  console.log('Hello, World!');
 }
 ```
 ````
@@ -123,9 +123,9 @@ npm run insert-more
 
 ```javascript
 const post = {
-  title: "文章標題",
-  slug: "article-slug",
-  coverImageUrl: "https://example.com/cover.jpg",
+  title: '文章標題',
+  slug: 'article-slug',
+  coverImageUrl: 'https://example.com/cover.jpg',
   content: `
 # 文章內容
 
@@ -150,16 +150,16 @@ const post = {
 ### Snippet 組件
 
 ```jsx
-<Snippet text="npm install package" />
+<Snippet text='npm install package' />
 ```
 
 ### Tree 組件
 
 ```jsx
 <Tree>
-  <Tree.File name="file.js" />
-  <Tree.Folder name="src">
-    <Tree.File name="index.js" />
+  <Tree.File name='file.js' />
+  <Tree.Folder name='src'>
+    <Tree.File name='index.js' />
   </Tree.Folder>
 </Tree>
 ```
@@ -221,12 +221,12 @@ CMD ["npm", "start"]
 ### 連接數據庫
 
 ```javascript
-import { MongoClient } from "mongodb";
+import { MongoClient } from 'mongodb';
 
 const client = new MongoClient(process.env.MONGODB_URI_EXTERNAL);
 await client.connect();
-const db = client.db("blog");
-const collection = db.collection("posts");
+const db = client.db('blog');
+const collection = db.collection('posts');
 ```
 
 ### 查詢文章
@@ -236,16 +236,16 @@ const collection = db.collection("posts");
 const posts = await collection.find({}).toArray();
 
 // 根據 slug 獲取文章
-const post = await collection.findOne({ slug: "article-slug" });
+const post = await collection.findOne({ slug: 'article-slug' });
 ```
 
 ### 插入文章
 
 ```javascript
 const result = await collection.insertOne({
-  title: "新文章",
-  slug: "new-article",
-  content: "# 內容",
+  title: '新文章',
+  slug: 'new-article',
+  content: '# 內容',
   createdAt: new Date(),
   updatedAt: new Date(),
 });
@@ -295,12 +295,10 @@ const result = await collection.insertOne({
 ### 常見問題
 
 1. **MDX 渲染錯誤**
-
    - 檢查語法是否正確
    - 確保自定義組件已導入
 
 2. **數據庫連接失敗**
-
    - 檢查 MongoDB URI
    - 確認網絡連接
 

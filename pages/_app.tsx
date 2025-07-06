@@ -1,28 +1,29 @@
-import "../styles/globals.css";
-import { SessionProvider, useSession } from "../src/session";
-import User from "../models/user";
-import mdxComponents from "../components/mdx";
-import { useEffect, useState } from "react";
-import { Avatar, GeistProvider, useToasts } from "@geist-ui/core";
-import NProgress from "nprogress";
-import { useRouter } from "next/router";
-import { MDXProvider } from "@mdx-js/react";
-import type { AppProps } from "next/app";
-import "nprogress/nprogress.css";
-import ThemeToggle from "../components/ThemeToggle";
+import { Avatar, GeistProvider, useToasts } from '@geist-ui/core';
+import { MDXProvider } from '@mdx-js/react';
+import type { AppProps } from 'next/app';
+import { useRouter } from 'next/router';
+import NProgress from 'nprogress';
+import 'nprogress/nprogress.css';
+import { useEffect, useState } from 'react';
+
+import ThemeToggle from '../components/ThemeToggle';
+import mdxComponents from '../components/mdx';
+import User from '../models/user';
+import { SessionProvider, useSession } from '../src/session';
+import '../styles/globals.css';
 
 function MyApp({ Component, pageProps }: AppProps) {
   const router = useRouter();
 
   const handleRouteChange = (url: string) => {
     // @ts-ignore
-    window.gtag("config", "G-5S8XLKRFYM", { page_path: url });
+    window.gtag('config', 'G-5S8XLKRFYM', { page_path: url });
   };
 
   useEffect(() => {
-    router.events.on("routeChangeComplete", handleRouteChange);
+    router.events.on('routeChangeComplete', handleRouteChange);
     return () => {
-      router.events.off("routeChangeComplete", handleRouteChange);
+      router.events.off('routeChangeComplete', handleRouteChange);
     };
   }, [router.events]);
 
@@ -30,13 +31,13 @@ function MyApp({ Component, pageProps }: AppProps) {
     let routeChangeStart = () => NProgress.start();
     let routeChangeComplete = () => NProgress.done();
 
-    router.events.on("routeChangeStart", routeChangeStart);
-    router.events.on("routeChangeComplete", routeChangeComplete);
-    router.events.on("routeChangeError", routeChangeComplete);
+    router.events.on('routeChangeStart', routeChangeStart);
+    router.events.on('routeChangeComplete', routeChangeComplete);
+    router.events.on('routeChangeError', routeChangeComplete);
     return () => {
-      router.events.off("routeChangeStart", routeChangeStart);
-      router.events.off("routeChangeComplete", routeChangeComplete);
-      router.events.off("routeChangeError", routeChangeComplete);
+      router.events.off('routeChangeStart', routeChangeStart);
+      router.events.off('routeChangeComplete', routeChangeComplete);
+      router.events.off('routeChangeError', routeChangeComplete);
     };
   }, []);
 
@@ -51,13 +52,13 @@ function MyApp({ Component, pageProps }: AppProps) {
   async function restoreSession() {
     if (
       !window.document.cookie
-        .split(";")
+        .split(';')
         .map((c) => c.trim())
-        .find((c) => c.startsWith("token="))
+        .find((c) => c.startsWith('token='))
     )
       return;
     try {
-      const res = await fetch("/api/me");
+      const res = await fetch('/api/me');
       const user = await res.json();
       setSession(user);
     } catch (err) {}
@@ -83,14 +84,12 @@ function SessionRestoreNotification() {
     if (session?.session) {
       setToast({
         text: (
-          <div className="flex flex-row items-center">
+          <div className='flex flex-row items-center'>
             <Avatar src={session.session.avatarUrl} />
-            <p className="ml-4">
-              哈囉， {session.session.name}！歡迎回來我的 Blog。
-            </p>
+            <p className='ml-4'>哈囉， {session.session.name}！歡迎回來我的 Blog。</p>
           </div>
         ),
-        type: "success",
+        type: 'success',
         delay: 5000,
       });
     }

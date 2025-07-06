@@ -6,10 +6,7 @@ export default class MyDocument extends Document {
     return (
       <Html>
         <Head>
-          <script
-            async
-            src="https://www.googletagmanager.com/gtag/js?id=G-5S8XLKRFYM"
-          />
+          <script async src='https://www.googletagmanager.com/gtag/js?id=G-5S8XLKRFYM' />
           <script
             dangerouslySetInnerHTML={{
               __html: `
@@ -20,11 +17,11 @@ export default class MyDocument extends Document {
             `,
             }}
           />
-          <Script src="https://accounts.google.com/gsi/client" />
+          <Script src='https://accounts.google.com/gsi/client' />
           <link
-            rel="stylesheet"
-            href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.4.0/styles/github-dark.min.css"
-            media="print"
+            rel='stylesheet'
+            href='https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.4.0/styles/github-dark.min.css'
+            media='print'
             onLoad={() => {
               // @ts-ignore
               this.media = 'all';

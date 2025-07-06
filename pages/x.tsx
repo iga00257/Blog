@@ -1,5 +1,6 @@
-import links from '../src/links';
 import { GetServerSideProps } from 'next';
+
+import links from '../src/links';
 
 export default () => null;
 

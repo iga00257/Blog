@@ -1,5 +1,6 @@
-import verifyJwt from '../../utils/verifyJwt';
 import { NextApiRequest, NextApiResponse } from 'next';
+
+import verifyJwt from '../../utils/verifyJwt';
 
 export default async function (req: NextApiRequest, res: NextApiResponse) {
   const JWT_SECRET = process.env.JWT_SECRET;

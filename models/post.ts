@@ -13,7 +13,7 @@ export function parsePost(data: Post) {
     ...data,
     _id: data._id,
     createdAt: new Date(data.createdAt),
-    updatedAt: new Date(data.updatedAt)
+    updatedAt: new Date(data.updatedAt),
   };
 }
 
@@ -36,7 +36,7 @@ export function serializePost(data: Post) {
     ...data,
     _id: toHexString(data._id),
     createdAt: dateToISOString(data.createdAt),
-    updatedAt: dateToISOString(data.updatedAt)
+    updatedAt: dateToISOString(data.updatedAt),
   };
 }
 

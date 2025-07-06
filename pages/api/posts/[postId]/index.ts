@@ -1,6 +1,7 @@
-import { getPostInMongo, } from '../../../../services/getPost';
-import { NextApiRequest, NextApiResponse } from 'next';
 import { ObjectId } from 'mongodb';
+import { NextApiRequest, NextApiResponse } from 'next';
+
+import { getPostInMongo } from '../../../../services/getPost';
 
 export default async function (req: NextApiRequest, res: NextApiResponse) {
   const { postId } = req.query;
@@ -14,12 +15,13 @@ export default async function (req: NextApiRequest, res: NextApiResponse) {
       try {
         let isSent = false;
         getPostInMongo(postObjectId)
-          .then(async post => {
+          .then(async (post) => {
             if (!isSent) {
               res.status(200).json(post);
               isSent = true;
             }
-          }).catch(err => {
+          })
+          .catch((err) => {
             if (!isSent) {
               res.status(500).json({ error: err.message });
               isSent = true;

@@ -1,13 +1,13 @@
-const { MongoClient, ObjectId } = require("mongodb");
+const { MongoClient, ObjectId } = require('mongodb');
 
-const uri = process.env["MONGODB_URI_EXTERNAL"];
+const uri = process.env['MONGODB_URI_EXTERNAL'];
 
 const additionalPosts = [
   {
-    title: "Next.js 13 App Router 完全指南",
-    slug: "nextjs-13-app-router-guide",
+    title: 'Next.js 13 App Router 完全指南',
+    slug: 'nextjs-13-app-router-guide',
     coverImageUrl:
-      "https://images.unsplash.com/photo-1555066931-4365d14bab8c?w=1200&h=600&fit=crop",
+      'https://images.unsplash.com/photo-1555066931-4365d14bab8c?w=1200&h=600&fit=crop',
     content: `
 # Next.js 13 App Router 完全指南
 
@@ -57,14 +57,14 @@ export default function RootLayout({
   App Router 是 Next.js 的未來，建議新項目直接使用這個架構。
 </Note>
     `,
-    createdAt: new Date("2024-01-25"),
-    updatedAt: new Date("2024-01-25"),
+    createdAt: new Date('2024-01-25'),
+    updatedAt: new Date('2024-01-25'),
   },
   {
-    title: "現代 CSS 技巧：Grid 與 Flexbox",
-    slug: "modern-css-grid-flexbox",
+    title: '現代 CSS 技巧：Grid 與 Flexbox',
+    slug: 'modern-css-grid-flexbox',
     coverImageUrl:
-      "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=1200&h=600&fit=crop",
+      'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=1200&h=600&fit=crop',
     content: `
 # 現代 CSS 技巧：Grid 與 Flexbox
 
@@ -108,14 +108,14 @@ CSS Grid 和 Flexbox 是現代 CSS 布局的兩大核心技術。
   掌握 Grid 和 Flexbox 將大大提升你的 CSS 技能。
 </Note>
     `,
-    createdAt: new Date("2024-01-30"),
-    updatedAt: new Date("2024-01-30"),
+    createdAt: new Date('2024-01-30'),
+    updatedAt: new Date('2024-01-30'),
   },
   {
-    title: "Node.js 性能優化實戰指南",
-    slug: "nodejs-performance-optimization",
+    title: 'Node.js 性能優化實戰指南',
+    slug: 'nodejs-performance-optimization',
     coverImageUrl:
-      "https://images.unsplash.com/photo-1555066932-e78dd8fb77bb?w=1200&h=600&fit=crop",
+      'https://images.unsplash.com/photo-1555066932-e78dd8fb77bb?w=1200&h=600&fit=crop',
     content: `
 # Node.js 性能優化實戰指南
 
@@ -196,14 +196,14 @@ class MemoryCache {
   記住，過早優化是萬惡之源，先確保功能正確，再進行性能優化。
 </Note>
     `,
-    createdAt: new Date("2024-02-05"),
-    updatedAt: new Date("2024-02-05"),
+    createdAt: new Date('2024-02-05'),
+    updatedAt: new Date('2024-02-05'),
   },
   {
-    title: "Docker 容器化部署最佳實踐",
-    slug: "docker-containerization-best-practices",
+    title: 'Docker 容器化部署最佳實踐',
+    slug: 'docker-containerization-best-practices',
     coverImageUrl:
-      "https://images.unsplash.com/photo-1605745341112-85968b19335b?w=1200&h=600&fit=crop",
+      'https://images.unsplash.com/photo-1605745341112-85968b19335b?w=1200&h=600&fit=crop',
     content: `
 # Docker 容器化部署最佳實踐
 
@@ -273,14 +273,14 @@ volumes:
   容器化部署可以大大提高應用的可移植性和一致性。
 </Note>
     `,
-    createdAt: new Date("2024-02-10"),
-    updatedAt: new Date("2024-02-10"),
+    createdAt: new Date('2024-02-10'),
+    updatedAt: new Date('2024-02-10'),
   },
   {
-    title: "Git 工作流程與分支策略",
-    slug: "git-workflow-branching-strategy",
+    title: 'Git 工作流程與分支策略',
+    slug: 'git-workflow-branching-strategy',
     coverImageUrl:
-      "https://images.unsplash.com/photo-1516321318423-f06f85e504b3?w=1200&h=600&fit=crop",
+      'https://images.unsplash.com/photo-1516321318423-f06f85e504b3?w=1200&h=600&fit=crop',
     content: `
 # Git 工作流程與分支策略
 
@@ -343,14 +343,14 @@ git branch -d feature/old-feature
   良好的 Git 工作流程可以提高團隊的開發效率和代碼質量。
 </Note>
     `,
-    createdAt: new Date("2024-02-15"),
-    updatedAt: new Date("2024-02-15"),
+    createdAt: new Date('2024-02-15'),
+    updatedAt: new Date('2024-02-15'),
   },
 ];
 
 async function insertAdditionalPosts() {
   if (!uri) {
-    console.error("MONGODB_URI_EXTERNAL 環境變量未設置");
+    console.error('MONGODB_URI_EXTERNAL 環境變量未設置');
     process.exit(1);
   }
 
@@ -358,10 +358,10 @@ async function insertAdditionalPosts() {
 
   try {
     await client.connect();
-    console.log("已連接到 MongoDB");
+    console.log('已連接到 MongoDB');
 
-    const db = client.db("blog");
-    const collection = db.collection("posts");
+    const db = client.db('blog');
+    const collection = db.collection('posts');
 
     const existingCount = await collection.countDocuments();
     console.log(`數據庫中已有 ${existingCount} 篇文章`);
@@ -374,15 +374,15 @@ async function insertAdditionalPosts() {
     const result = await collection.insertMany(postsToInsert);
     console.log(`成功插入 ${result.insertedCount} 篇額外文章`);
 
-    console.log("\n插入的文章列表：");
+    console.log('\n插入的文章列表：');
     for (const post of postsToInsert) {
       console.log(`- ${post.title} (slug: ${post.slug})`);
     }
   } catch (error) {
-    console.error("插入文章時發生錯誤:", error);
+    console.error('插入文章時發生錯誤:', error);
   } finally {
     await client.close();
-    console.log("已關閉數據庫連接");
+    console.log('已關閉數據庫連接');
   }
 }
 

@@ -1,5 +1,6 @@
-import Post from '../models/post';
 import { MongoClient } from 'mongodb';
+
+import Post from '../models/post';
 
 const uri = process.env['MONGODB_URI_EXTERNAL'];
 
@@ -10,11 +11,14 @@ export async function getPostsInMongo(): Promise<Post[]> {
     await client.connect();
     const collection = client.db('blog').collection('posts');
     const find = await collection.find<Post>({});
-    return (await find.toArray()).map(post => ({
-      ...post,
-      content: post.content.trim().substring(0, 100) + ' ...'
-    })).sort((a: Post, b: Post) =>
-      new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
+    return (await find.toArray())
+      .map((post) => ({
+        ...post,
+        content: post.content.trim().substring(0, 100) + ' ...',
+      }))
+      .sort(
+        (a: Post, b: Post) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime(),
+      );
   } finally {
     await client.close();
   }

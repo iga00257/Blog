@@ -1,5 +1,6 @@
-import User, { parseUser } from '../models/user';
 import jwt from 'jsonwebtoken';
+
+import User, { parseUser } from '../models/user';
 
 function verifyJwt(token: string) {
   return new Promise<User | null>((resolve, reject) => {

@@ -1,13 +1,14 @@
-import getPost from "../../services/getPost";
-import arrayBufferToBuffer from "../../utils/arrayBufferToBuffer";
-import { Canvas, GlobalFonts, Image, SKRSContext2D } from "@napi-rs/canvas";
-import { COLORS } from "../../utils/colors";
+import { Canvas, GlobalFonts, Image, SKRSContext2D } from '@napi-rs/canvas';
 
-const SUPPORTED_ENCODING = new Set(["png", "avif", "webp"]);
+import getPost from '../../services/getPost';
+import arrayBufferToBuffer from '../../utils/arrayBufferToBuffer';
+import { COLORS } from '../../utils/colors';
+
+const SUPPORTED_ENCODING = new Set(['png', 'avif', 'webp']);
 const MIME_MAP: any = {
-  png: "image/png",
-  avif: "image/avif",
-  webp: "image/webp",
+  png: 'image/png',
+  avif: 'image/avif',
+  webp: 'image/webp',
 };
 
 /**
@@ -15,13 +16,13 @@ const MIME_MAP: any = {
  * @param {import('@vercel/node').VercelResponse} res
  */
 export default async function generateImage(req: any, res: any) {
-  const { url, type = "png" } = req.query;
-  let encodeType = SUPPORTED_ENCODING.has(type) ? type : "png";
-  if (url.startsWith("/posts")) {
-    const postId = url.split("/")[2];
-    const font = await fetch("https://yual.in/NotoSansTC-Bold.otf");
+  const { url, type = 'png' } = req.query;
+  let encodeType = SUPPORTED_ENCODING.has(type) ? type : 'png';
+  if (url.startsWith('/posts')) {
+    const postId = url.split('/')[2];
+    const font = await fetch('https://yual.in/NotoSansTC-Bold.otf');
     const fontBuffer = arrayBufferToBuffer(await font.arrayBuffer());
-    GlobalFonts.register(fontBuffer, "NotoSansTC-Bold");
+    GlobalFonts.register(fontBuffer, 'NotoSansTC-Bold');
     const post = await getPost(postId);
     const { title, content, coverImageUrl } = post;
     const cover = await fetch(coverImageUrl);
@@ -30,39 +31,39 @@ export default async function generateImage(req: any, res: any) {
     coverImage.src = coverBuffer;
     const description =
       content
-        .replace(/<[^>]+>/g, "")
+        .replace(/<[^>]+>/g, '')
         .slice(0, 80)
-        .trim() + " ...";
+        .trim() + ' ...';
     const WIDTH = 1200;
     const HEIGHT = 768;
     const canvas = new Canvas(WIDTH, HEIGHT);
-    const ctx = canvas.getContext("2d");
+    const ctx = canvas.getContext('2d');
     drawImageProp(ctx, coverImage, 0, 0, WIDTH, HEIGHT, 0.5, 0.5);
     ctx.fillStyle = COLORS.OVERLAY;
     ctx.fillRect(0, 0, WIDTH, HEIGHT);
     ctx.save();
     ctx.fillStyle = COLORS.WHITE;
-    ctx.font = "800 64px NotoSansTC-Bold";
-    printAt(ctx, "Yuanlin", 96, 180, 96, WIDTH, 64);
+    ctx.font = '800 64px NotoSansTC-Bold';
+    printAt(ctx, 'Yuanlin', 96, 180, 96, WIDTH, 64);
     ctx.fillStyle = COLORS.SECONDARY;
-    ctx.font = "800 48px NotoSansTC-Bold";
-    printAt(ctx, "Blog", 340, 180, 96, WIDTH, 48);
-    ctx.font = "800 64px NotoSansTC-Bold";
+    ctx.font = '800 48px NotoSansTC-Bold';
+    printAt(ctx, 'Blog', 340, 180, 96, WIDTH, 48);
+    ctx.font = '800 64px NotoSansTC-Bold';
     ctx.fillStyle = COLORS.WHITE;
 
     printAt(ctx, title, 96, HEIGHT / 2 - 64, 96, WIDTH - 192, 64);
-    ctx.font = "800 36px NotoSansTC-Bold";
+    ctx.font = '800 36px NotoSansTC-Bold';
     ctx.fillStyle = COLORS.OVERLAY_LIGHT;
     printAt(ctx, description, 96, HEIGHT - 200, 48, WIDTH - 192, 36);
     ctx.restore();
     const buffer = await canvas.encode(encodeType);
-    res.setHeader("Content-Type", MIME_MAP[encodeType]);
-    res.setHeader("Content-Disposition", "inline");
+    res.setHeader('Content-Type', MIME_MAP[encodeType]);
+    res.setHeader('Content-Disposition', 'inline');
     res.send(buffer);
   }
 }
 
-/** calculate string print width by text and fontSize */
+/** Calculate string print width by text and fontSize */
 function getStringWidth(text: string, fontSize: number) {
   let result = 0;
   for (let idx = 0; idx < text.length; idx++) {
@@ -75,7 +76,7 @@ function getStringWidth(text: string, fontSize: number) {
   return result;
 }
 
-/** print text on SKRSContext with wrapping */
+/** Print text on SKRSContext with wrapping */
 function printAt(
   context: SKRSContext2D,
   text: string,
@@ -83,7 +84,7 @@ function printAt(
   y: number,
   lineHeight: number,
   fitWidth: number,
-  fontSize: number
+  fontSize: number,
 ) {
   fitWidth = fitWidth || 0;
 
@@ -96,24 +97,14 @@ function printAt(
     const str = text.substring(0, idx);
     if (getStringWidth(str, fontSize) > fitWidth) {
       context.fillText(text.substring(0, idx - 1), x, y);
-      printAt(
-        context,
-        text.substring(idx - 1),
-        x,
-        y + lineHeight,
-        lineHeight,
-        fitWidth,
-        fontSize
-      );
+      printAt(context, text.substring(idx - 1), x, y + lineHeight, lineHeight, fitWidth, fontSize);
       return;
     }
   }
   context.fillText(text, x, y);
 }
 
-/**
- * https://stackoverflow.com/questions/21961839/simulation-background-size-cover-in-canvas
- **/
+/** https://stackoverflow.com/questions/21961839/simulation-background-size-cover-in-canvas */
 function drawImageProp(
   ctx: SKRSContext2D,
   img: any,
@@ -122,7 +113,7 @@ function drawImageProp(
   w: number,
   h: number,
   offsetX: number,
-  offsetY: number
+  offsetY: number,
 ) {
   if (arguments.length === 2) {
     x = y = 0;
@@ -131,8 +122,8 @@ function drawImageProp(
   }
 
   // default offset is center
-  offsetX = typeof offsetX === "number" ? offsetX : 0.5;
-  offsetY = typeof offsetY === "number" ? offsetY : 0.5;
+  offsetX = typeof offsetX === 'number' ? offsetX : 0.5;
+  offsetY = typeof offsetY === 'number' ? offsetY : 0.5;
 
   // keep bounds [0.0, 1.0]
   if (offsetX < 0) offsetX = 0;

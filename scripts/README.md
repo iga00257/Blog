@@ -56,7 +56,6 @@ node scripts/generate-more-posts.js
 腳本會插入以下示例文章：
 
 1. **React 18 新特性解析**
-
    - Slug: `react-18-features`
    - 內容：介紹 React 18 的 Concurrent Features 和 Suspense
 

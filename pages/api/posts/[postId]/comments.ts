@@ -1,8 +1,9 @@
+import { ObjectId } from 'mongodb';
+import { NextApiRequest, NextApiResponse } from 'next';
+
+import getComments from '../../../../services/getComments';
 import getMongoClient from '../../../../services/getMongoClient';
 import verifyJwt from '../../../../utils/verifyJwt';
-import getComments from '../../../../services/getComments';
-import { NextApiRequest, NextApiResponse } from 'next';
-import { ObjectId } from 'mongodb';
 
 export default async function (req: NextApiRequest, res: NextApiResponse) {
   const { postId } = req.query;

@@ -48,29 +48,43 @@
 }
 
 html {
-  font-family: Inter, ui-sans-serif, system-ui, -apple-system,
-    BlinkMacSystemFont, Segoe UI, Roboto, Helvetica Neue, Arial, Noto Sans,
-    sans-serif, Apple Color Emoji, Segoe UI Emoji, Segoe UI Symbol,
+  font-family:
+    Inter,
+    ui-sans-serif,
+    system-ui,
+    -apple-system,
+    BlinkMacSystemFont,
+    Segoe UI,
+    Roboto,
+    Helvetica Neue,
+    Arial,
+    Noto Sans,
+    sans-serif,
+    Apple Color Emoji,
+    Segoe UI Emoji,
+    Segoe UI Symbol,
     Noto Color Emoji;
   -webkit-font-smoothing: antialiased;
-  @apply bg-white dark:bg-dark-bg text-text-primary dark:text-dark-text-primary;
-  transition: background-color 0.3s ease, color 0.3s ease;
+  @apply bg-white text-text-primary dark:bg-dark-bg dark:text-dark-text-primary;
+  transition:
+    background-color 0.3s ease,
+    color 0.3s ease;
 }
 
 #article h1 {
-  @apply text-3xl font-bold mt-16 mb-8;
+  @apply mt-16 mb-8 text-3xl font-bold;
 }
 
 #article h2 {
-  @apply text-2xl font-bold mt-12 mb-4;
+  @apply mt-12 mb-4 text-2xl font-bold;
 }
 
 #article h3 {
-  @apply text-xl font-bold mt-12 mb-4;
+  @apply mt-12 mb-4 text-xl font-bold;
 }
 
 #article p {
-  @apply text-text-primary dark:text-dark-text-primary leading-8 my-8;
+  @apply my-8 leading-8 text-text-primary dark:text-dark-text-primary;
 }
 
 pre.mdx-rendered {
@@ -78,10 +92,11 @@ pre.mdx-rendered {
 }
 
 pre.mdx-rendered > div {
-  @apply bg-white border border-border rounded-md !important;
-  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas,
-    "Liberation Mono", "Courier New", monospace !important;
+  @apply rounded-md border border-border bg-white !important;
   font-size: var(--snippet-font-size) !important;
+  font-family:
+    ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, 'Liberation Mono', 'Courier New',
+    monospace !important;
 }
 
 .mdx-snippet > pre {
@@ -90,14 +105,15 @@ pre.mdx-rendered > div {
 
 pre.mdx-rendered > code {
   display: block !important;
-  width: 100% !important;
-  overflow-x: auto !important;
-  padding: 12px !important;
-  background-color: #fff !important;
   border: 1px solid #eaeaea !important;
   border-radius: 6px !important;
-  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas,
-    "Liberation Mono", "Courier New", monospace !important;
+  background-color: #fff !important;
+  padding: 12px !important;
+  width: 100% !important;
+  overflow-x: auto !important;
+  font-family:
+    ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, 'Liberation Mono', 'Courier New',
+    monospace !important;
 }
 
 .mdx-component .btn-group {
@@ -105,21 +121,19 @@ pre.mdx-rendered > code {
 }
 
 #article code:not(pre *) {
-  background-color: #fff !important;
   border: 1px solid #eaeaea !important;
   border-radius: 6px !important;
-  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas,
-    "Liberation Mono", "Courier New", monospace !important;
-  font-size: 0.75rem !important;
+  background-color: #fff !important;
   padding: 2px 4px !important;
+  font-size: 0.75rem !important;
+  font-family:
+    ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, 'Liberation Mono', 'Courier New',
+    monospace !important;
 }
 
 #article a {
-  @apply mx-1 text-text-primary dark:text-dark-text-primary transition break-all font-bold;
-  background-image: linear-gradient(
-    transparent 70%,
-    var(--color-secondary-light) 30%
-  );
+  @apply mx-1 break-all font-bold text-text-primary transition dark:text-dark-text-primary;
+  background-image: linear-gradient(transparent 70%, var(--color-secondary-light) 30%);
 }
 
 #nprogress .bar {
@@ -128,7 +142,9 @@ pre.mdx-rendered > code {
 }
 
 #nprogress .peg {
-  box-shadow: 0 0 10px var(--color-secondary), 0 0 5px var(--color-primary) !important;
+  box-shadow:
+    0 0 10px var(--color-secondary),
+    0 0 5px var(--color-primary) !important;
 }
 
 #nprogress .spinner {
