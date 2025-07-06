@@ -16,7 +16,7 @@ function SelectQuestion(props: Props) {
       />
       <ButtonGroup vertical width='100%'>
         {props.options.map((opt, i) => (
-          <Button key={i} style={{ textAlign: 'left' }}>
+          <Button key={i} style={{ textAlign: 'left' }} {...({} as any)}>
             {opt}
           </Button>
         ))}

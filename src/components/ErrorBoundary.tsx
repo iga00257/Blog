@@ -16,7 +16,9 @@ class ErrorBoundary extends Component<any, any> {
       return (
         <div>
           <h2>Oops, there is an error!</h2>
-          <Button onClick={() => this.setState({ hasError: false })}>Try again?</Button>
+          <Button onClick={() => this.setState({ hasError: false })} {...({} as any)}>
+            Try again?
+          </Button>
         </div>
       );
     }
