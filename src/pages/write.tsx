@@ -71,7 +71,8 @@ export default function Write() {
       } else {
         setError(data.error || '保存失敗');
       }
-    } catch (err) {
+    } catch (_err: any) {
+      console.error(_err);
       setError('網絡錯誤，請稍後再試');
     } finally {
       setIsSaving(false);
@@ -91,6 +92,7 @@ export default function Write() {
                   scale={1 / 2}
                   icon={<Edit3 size={16} />}
                   onClick={() => setShowForm(!showForm)}
+                  {...({} as any)}
                 >
                   {showForm ? '隱藏' : '設置'}
                 </Button>
@@ -100,6 +102,7 @@ export default function Write() {
                   icon={<Save size={16} />}
                   loading={isSaving}
                   onClick={handleSave}
+                  {...({} as any)}
                 >
                   保存文章
                 </Button>
@@ -114,6 +117,7 @@ export default function Write() {
                   value={title}
                   onChange={(e) => setTitle(e.target.value)}
                   width='100%'
+                  {...({} as any)}
                 />
                 <Input
                   label='封面圖片 URL'
@@ -121,6 +125,7 @@ export default function Write() {
                   value={coverImageUrl}
                   onChange={(e) => setCoverImageUrl(e.target.value)}
                   width='100%'
+                  {...({} as any)}
                 />
               </div>
             )}

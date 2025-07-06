@@ -55,6 +55,7 @@ export default function PostPage(props: PageProps) {
         await refresh();
       }
     } catch (e) {
+      console.error(e);
       toast.setToast({
         text: '發生錯誤，暫時無法留言！',
         type: 'error',
@@ -203,7 +204,12 @@ export default function PostPage(props: PageProps) {
 
         {likes && (
           <div className='overflow-hidden'>
-            <div onClick={handleLike} className='group flex cursor-pointer items-center'>
+            <button
+              onClick={handleLike}
+              className='group flex cursor-pointer items-center border-none bg-transparent p-0'
+              aria-label='給文章點讚'
+              type='button'
+            >
               <Heart
                 fill='currentColor'
                 fillOpacity={likes.userLike / 10 || 0}
@@ -219,7 +225,7 @@ export default function PostPage(props: PageProps) {
                   <Avatar key={index} src={avatar} stacked />
                 ))}
               </Avatar.Group>
-            </div>
+            </button>
           </div>
         )}
       </div>
@@ -449,6 +455,7 @@ export const getStaticProps: GetStaticProps = async (context) => {
       },
     };
   } catch (error) {
+    console.error(error);
     return { notFound: true };
   }
 };

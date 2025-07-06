@@ -43,9 +43,7 @@ export default function Card() {
 
           <div className='absolute bottom-12 left-0 w-full'>
             <Link href='/'>
-              <a>
-                <p className='cursor-pointer text-center text-blue-500'>回部落格首頁</p>
-              </a>
+              <p className='cursor-pointer text-center text-blue-500'>回部落格首頁</p>
             </Link>
           </div>
         </div>

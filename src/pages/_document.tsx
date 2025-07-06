@@ -22,9 +22,8 @@ export default class MyDocument extends Document {
             rel='stylesheet'
             href='https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.4.0/styles/github-dark.min.css'
             media='print'
-            onLoad={() => {
-              // @ts-ignore
-              this.media = 'all';
+            onLoad={(e) => {
+              (e.target as HTMLLinkElement).media = 'all';
             }}
           />
         </Head>

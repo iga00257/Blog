@@ -1,6 +1,4 @@
-import { Facebook, GitHub, Globe, Instagram, Linkedin } from 'react-feather';
-
-import LineIcon from './LineIcon';
+import { GitHub, Globe } from 'react-feather';
 
 interface Props {
   color?: string;

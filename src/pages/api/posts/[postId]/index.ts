@@ -28,6 +28,7 @@ export default async function (req: NextApiRequest, res: NextApiResponse) {
             }
           });
       } catch (err) {
+        console.error(err);
         res.status(404).json({ error: 'Post not found' });
       }
   }

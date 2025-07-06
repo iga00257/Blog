@@ -17,7 +17,7 @@ const MIME_MAP: any = {
  */
 export default async function generateImage(req: any, res: any) {
   const { url, type = 'png' } = req.query;
-  let encodeType = SUPPORTED_ENCODING.has(type) ? type : 'png';
+  const encodeType = SUPPORTED_ENCODING.has(type) ? type : 'png';
   if (url.startsWith('/posts')) {
     const postId = url.split('/')[2];
     const font = await fetch('https://yual.in/NotoSansTC-Bold.otf');
@@ -131,16 +131,16 @@ function drawImageProp(
   if (offsetX > 1) offsetX = 1;
   if (offsetY > 1) offsetY = 1;
 
-  var iw = img.width,
-    ih = img.height,
-    r = Math.min(w / iw, h / ih),
-    nw = iw * r, // new prop. width
-    nh = ih * r, // new prop. height
-    cx,
-    cy,
-    cw,
-    ch,
-    ar = 1;
+  const iw = img.width;
+  const ih = img.height;
+  const r = Math.min(w / iw, h / ih);
+  let nw = iw * r; // new prop. width
+  let nh = ih * r; // new prop. height
+  let cx;
+  let cy;
+  let cw;
+  let ch;
+  let ar = 1;
 
   // decide which gap to fill
   if (nw < w) ar = w / nw;

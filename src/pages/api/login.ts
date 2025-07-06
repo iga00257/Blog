@@ -23,8 +23,8 @@ export default async function (req: NextApiRequest, res: NextApiResponse) {
       googleID: '',
     };
     switch (req.method) {
-      case 'POST':
-        let redirectUrl = req.query.url;
+      case 'POST': {
+        const redirectUrl = req.query.url;
         if (typeof redirectUrl === 'string') redirect = redirectUrl;
         const ticket = await client.verifyIdToken({
           idToken: req.body.credential,
@@ -40,7 +40,8 @@ export default async function (req: NextApiRequest, res: NextApiResponse) {
         user.avatarUrl = payload['picture'];
         user.email = payload['email'];
         break;
-      case 'GET':
+      }
+      case 'GET': {
         const code = req.query.code;
         const queryState = req.query.state;
         if (typeof queryState === 'string') redirect = queryState;
@@ -63,6 +64,8 @@ export default async function (req: NextApiRequest, res: NextApiResponse) {
         user.name = getUserInfoRes.data.name;
         user.avatarUrl = getUserInfoRes.data.picture;
         user.email = getUserInfoRes.data.email;
+        break;
+      }
     }
     const mongo = await getMongoClient();
     const find = await mongo.db('blog').collection('users').findOne({ googleID: user.googleId });

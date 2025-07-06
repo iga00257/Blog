@@ -15,7 +15,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   const mongo = await getMongoClient();
 
   switch (req.method) {
-    case 'POST':
+    case 'POST': {
       const token = req.cookies.token;
       const user = await verifyJwt(token || '');
       if (!user) {
@@ -56,7 +56,8 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         res.status(404).json({ error: 'Post not found' });
       }
       break;
-    case 'GET':
+    }
+    case 'GET': {
       try {
         let userLike = 0;
         const token = req.cookies.token;
@@ -97,6 +98,8 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       } finally {
         await mongo.close();
       }
+      break;
+    }
   }
 };
 

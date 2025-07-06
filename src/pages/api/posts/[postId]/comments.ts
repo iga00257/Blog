@@ -14,7 +14,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   const postObjectId = new ObjectId(postId);
   const mongo = await getMongoClient();
   switch (req.method) {
-    case 'POST':
+    case 'POST': {
       const token = req.cookies.token;
       const user = await verifyJwt(token || '');
       if (!user) {
@@ -36,8 +36,9 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         await mongo.close();
         res.status(404).json({ error: 'Post not found' });
       }
-      return;
-    case 'GET':
+      break;
+    }
+    case 'GET': {
       try {
         const comments = await getComments(postObjectId);
         res.status(200).json(comments);
@@ -46,6 +47,8 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         await mongo.close();
         res.status(404).json({ error: 'Post not found' });
       }
+      break;
+    }
   }
 };
 

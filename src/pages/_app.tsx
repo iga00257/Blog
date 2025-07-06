@@ -16,8 +16,7 @@ function MyApp({ Component, pageProps }: AppProps) {
   const router = useRouter();
 
   const handleRouteChange = (url: string) => {
-    // @ts-ignore
-    window.gtag('config', 'G-5S8XLKRFYM', { page_path: url });
+    console.log('routeChange', url);
   };
 
   useEffect(() => {
@@ -28,8 +27,8 @@ function MyApp({ Component, pageProps }: AppProps) {
   }, [router.events]);
 
   useEffect(() => {
-    let routeChangeStart = () => NProgress.start();
-    let routeChangeComplete = () => NProgress.done();
+    const routeChangeStart = () => NProgress.start();
+    const routeChangeComplete = () => NProgress.done();
 
     router.events.on('routeChangeStart', routeChangeStart);
     router.events.on('routeChangeComplete', routeChangeComplete);
@@ -61,7 +60,9 @@ function MyApp({ Component, pageProps }: AppProps) {
       const res = await fetch('/api/me');
       const user = await res.json();
       setSession(user);
-    } catch (err) {}
+    } catch (err) {
+      console.error(err);
+    }
   }
 
   return (
