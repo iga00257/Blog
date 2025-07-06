@@ -4,7 +4,7 @@ import { ObjectId } from 'mongodb';
 import { GetStaticProps } from 'next';
 import { MDXRemote, MDXRemoteSerializeResult } from 'next-mdx-remote';
 import { serialize } from 'next-mdx-remote/serialize';
-import Image from "next/legacy/image";
+import Image from 'next/legacy/image';
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
 import { ArrowLeft, Heart } from 'react-feather';
@@ -144,17 +144,19 @@ export default function PostPage(props: PageProps) {
         )}
       >
         <Link href='/' scroll>
-          <div className='mb-0 flex cursor-pointer flex-row items-baseline text-xl font-extrabold lg:flex-col lg:text-3xl'>
-            <p
-              className={cx(
-                'z-50 mr-2 transition duration-1000',
-                shouldHideWhiteLogo ? 'text-black' : 'text-white',
-              )}
-            >
-              Derrick Liu
-            </p>
-            <p className='text-lg text-primary'>Blog</p>
-          </div>
+          <a>
+            <div className='mb-0 flex cursor-pointer flex-row items-baseline text-xl font-extrabold lg:flex-col lg:text-3xl'>
+              <p
+                className={cx(
+                  'z-50 mr-2 transition duration-1000',
+                  shouldHideWhiteLogo ? 'text-black' : 'text-white',
+                )}
+              >
+                Derrick Liu
+              </p>
+              <p className='text-lg text-primary'>Blog</p>
+            </div>
+          </a>
         </Link>
         <SocialLinks color={shouldHideWhiteLogo ? 'black' : 'white'} />
       </div>
@@ -226,7 +228,6 @@ export default function PostPage(props: PageProps) {
           </div>
         )}
       </div>
-
       <div className='w-full bg-zinc-50 py-16 dark:bg-dark-bg-secondary'>
         <div className='mx-auto w-full px-4 lg:w-[650px]'>
           <p className='mb-4 text-center font-extrabold text-text-secondary opacity-60 dark:text-dark-text-secondary md:text-left'>
@@ -285,7 +286,6 @@ export default function PostPage(props: PageProps) {
           )}
         </div>
       </div>
-
       <div className='w-full bg-zinc-100 pb-32 pt-16 dark:bg-dark-bg-tertiary'>
         <div className='mx-auto w-full px-4 lg:w-[650px]'>
           <div className='mt-12 flex flex-col items-center md:flex-row'>
@@ -311,7 +311,6 @@ export default function PostPage(props: PageProps) {
           </div>
         </div>
       </div>
-
       {posts && posts.length > 0 && (
         <div className='w-full bg-zinc-200 pb-32 pt-16 dark:bg-dark-bg'>
           <div className='mx-auto w-full px-4 lg:w-[650px]'>
@@ -323,7 +322,7 @@ export default function PostPage(props: PageProps) {
               .sort(() => Math.random() - 0.5)
               .slice(0, 5)
               .map((p) => (
-                <Link key={p._id} href='/posts/[postId]' as={`/posts/${p._id}`}>
+                <Link key={p._id} href='/posts/[postId]' as={`/posts/${p._id}`} legacyBehavior>
                   <div className='group mb-12 flex cursor-pointer flex-col md:flex-row'>
                     <img
                       src={p.coverImageUrl}
@@ -344,7 +343,7 @@ export default function PostPage(props: PageProps) {
                   </div>
                 </Link>
               ))}
-            <Link href='/' scroll>
+            <Link href='/' scroll legacyBehavior>
               <div className='flex cursor-pointer'>
                 <ArrowLeft className='mr-4' />
                 <p className='text-text-primary dark:text-dark-text-primary'>回部落格首頁</p>
@@ -353,7 +352,6 @@ export default function PostPage(props: PageProps) {
           </div>
         </div>
       )}
-
       <div
         id='g_id_onload'
         data-auto_select='true'

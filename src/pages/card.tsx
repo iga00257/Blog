@@ -3,7 +3,7 @@ import Link from 'next/link';
 
 import SocialLinks from '../components/SocialLinks';
 
-export default () => {
+export default function Card() {
   return (
     <div className='flex h-screen w-full flex-col justify-center bg-zinc-50 pb-32 pt-16 dark:bg-dark-bg-secondary'>
       <Head>
@@ -43,11 +43,13 @@ export default () => {
 
           <div className='absolute bottom-12 left-0 w-full'>
             <Link href='/'>
-              <p className='cursor-pointer text-center text-blue-500'>回部落格首頁</p>
+              <a>
+                <p className='cursor-pointer text-center text-blue-500'>回部落格首頁</p>
+              </a>
             </Link>
           </div>
         </div>
       </div>
     </div>
   );
-};
+}

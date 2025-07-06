@@ -8,10 +8,12 @@ export default function NotFound() {
       <div className='container mx-auto flex flex-row flex-wrap px-6 py-8 lg:px-32 lg:pb-24 2xl:px-64'>
         <div className='mt-4 lg:mt-12'>
           <Link href='/' scroll>
-            <div className='mb-4 flex cursor-pointer flex-row items-baseline text-xl font-extrabold lg:mb-0 lg:flex-col lg:text-3xl'>
-              <p className='mr-2'>Derrick Liu</p>
-              <p className='text-lg text-primary'>Blog</p>
-            </div>
+            <a>
+              <div className='mb-4 flex cursor-pointer flex-row items-baseline text-xl font-extrabold lg:mb-0 lg:flex-col lg:text-3xl'>
+                <p className='mr-2'>Derrick Liu</p>
+                <p className='text-lg text-primary'>Blog</p>
+              </div>
+            </a>
           </Link>
           <SocialLinks />
         </div>
@@ -22,8 +24,8 @@ export default function NotFound() {
           <div className='mt-32'>
             <p>可以的話，請告訴我你從哪裡發現這個頁面的，讓我可以修復這個問題 🙏</p>
           </div>
-          <Link href='/'>
-            <a className='mt-8 font-bold text-primary'>回首頁</a>
+          <Link href='/' className='mt-8 font-bold text-primary'>
+            回首頁
           </Link>
         </div>
       </div>
