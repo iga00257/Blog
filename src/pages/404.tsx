@@ -7,13 +7,11 @@ export default function NotFound() {
     <div className='min-h-screen bg-white text-text-primary transition-colors duration-300 dark:bg-dark-bg dark:text-dark-text-primary'>
       <div className='container mx-auto flex flex-row flex-wrap px-6 py-8 lg:px-32 lg:pb-24 2xl:px-64'>
         <div className='mt-4 lg:mt-12'>
-          <Link href='/' scroll>
-            <a>
-              <div className='mb-4 flex cursor-pointer flex-row items-baseline text-xl font-extrabold lg:mb-0 lg:flex-col lg:text-3xl'>
-                <p className='mr-2'>Derrick Liu</p>
-                <p className='text-lg text-primary'>Blog</p>
-              </div>
-            </a>
+          <Link href='/' scroll passHref>
+            <div className='mb-4 flex cursor-pointer flex-row items-baseline text-xl font-extrabold lg:mb-0 lg:flex-col lg:text-3xl'>
+              <p className='mr-2'>Derrick Liu</p>
+              <p className='text-lg text-primary'>Blog</p>
+            </div>
           </Link>
           <SocialLinks />
         </div>

@@ -140,20 +140,18 @@ export default function PostPage(props: PageProps) {
           !shouldHideWhiteLogo && 'bg-opacity-0',
         )}
       >
-        <Link href='/' scroll>
-          <a>
-            <div className='mb-0 flex cursor-pointer flex-row items-baseline text-xl font-extrabold lg:flex-col lg:text-3xl'>
-              <p
-                className={cx(
-                  'z-50 mr-2 transition duration-1000',
-                  shouldHideWhiteLogo ? 'text-black' : 'text-white',
-                )}
-              >
-                Derrick Liu
-              </p>
-              <p className='text-lg text-primary'>Blog</p>
-            </div>
-          </a>
+        <Link href='/' scroll passHref>
+          <div className='mb-0 flex cursor-pointer flex-row items-baseline text-xl font-extrabold lg:flex-col lg:text-3xl'>
+            <p
+              className={cx(
+                'z-50 mr-2 transition duration-1000',
+                shouldHideWhiteLogo ? 'text-black' : 'text-white',
+              )}
+            >
+              Derrick Liu
+            </p>
+            <p className='text-lg text-primary'>Blog</p>
+          </div>
         </Link>
         <SocialLinks color={shouldHideWhiteLogo ? 'black' : 'white'} />
       </div>
