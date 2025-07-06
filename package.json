@@ -1,13 +1,17 @@
 {
-  "name": "yual.in",
+  "name": "derrick-liu-blog",
   "version": "1.0.0",
   "private": true,
   "scripts": {
     "build": "next build",
+    "commitlint": "commitlint --edit",
     "dev": "next dev",
     "insert-more": "node scripts/generate-more-posts.js",
     "insert-samples": "node scripts/insert-sample-posts.js",
     "lint": "next lint",
+    "pre-commit": "npx lint-staged",
+    "pre-push": "tsc --noEmit",
+    "prepare": "husky",
     "prettier": "prettier --write --cache .",
     "start": "next start",
     "test-db": "node scripts/test-connection.js"

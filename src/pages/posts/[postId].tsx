@@ -9,16 +9,15 @@ import Link from 'next/link';
 import { useEffect, useState } from 'react';
 import { ArrowLeft, Heart } from 'react-feather';
 
+import PageHead from '@/components/PageHead';
+import SocialLinks from '@/components/SocialLinks';
 import { GOOGLE_OAUTH_CLIENT_ID } from '@/constants/config.client';
 import { useSession } from '@/hooks/session';
-
-import PageHead from '../../components/PageHead';
-import SocialLinks from '../../components/SocialLinks';
-import Comment from '../../models/comment';
-import Post, { parsePost, serializePost } from '../../models/post';
-import getComments from '../../services/getComments';
-import getPost, { getPostBySlug } from '../../services/getPost';
-import { getPostsInMongo } from '../../services/getPosts';
+import Comment from '@/models/comment';
+import Post, { parsePost, serializePost } from '@/models/post';
+import getComments from '@/services/getComments';
+import getPost, { getPostBySlug } from '@/services/getPost';
+import { getPostsInMongo } from '@/services/getPosts';
 
 interface PageProps {
   post: Post;
@@ -129,10 +128,8 @@ export default function PostPage(props: PageProps) {
   return (
     <div className='bg-white text-text-primary transition-colors duration-300 dark:bg-dark-bg dark:text-dark-text-primary'>
       <PageHead
-        canonicalUrl={`https://yual.in/posts/${post.slug}`}
         title={(post ? post.title : 'Blog') + '| Derrick Liu 劉穎多'}
         type='article'
-        imageUrl={`https://yual.in/og_image/${post.slug}`}
         description={post?.content.substring(0, 100) + '...'}
       />
       <div
