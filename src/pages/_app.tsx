@@ -6,11 +6,11 @@ import NProgress from 'nprogress';
 import 'nprogress/nprogress.css';
 import { useEffect, useState } from 'react';
 
-import ThemeToggle from '../components/ThemeToggle';
-import mdxComponents from '../components/mdx';
-import User from '../models/user';
-import { SessionProvider, useSession } from '../src/session';
-import '../styles/globals.css';
+import ThemeToggle from '@/components/ThemeToggle';
+import mdxComponents from '@/components/mdx';
+import { SessionProvider, useSession } from '@/hooks/session';
+import User from '@/models/user';
+import '@/styles/globals.css';
 
 function MyApp({ Component, pageProps }: AppProps) {
   const router = useRouter();

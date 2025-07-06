@@ -9,15 +9,16 @@ import Link from 'next/link';
 import { useEffect, useState } from 'react';
 import { ArrowLeft, Heart } from 'react-feather';
 
+import { GOOGLE_OAUTH_CLIENT_ID } from '@/constants/config.client';
+import { useSession } from '@/hooks/session';
+
 import PageHead from '../../components/PageHead';
 import SocialLinks from '../../components/SocialLinks';
-import { GOOGLE_OAUTH_CLIENT_ID } from '../../config.client';
 import Comment from '../../models/comment';
 import Post, { parsePost, serializePost } from '../../models/post';
 import getComments from '../../services/getComments';
 import getPost, { getPostBySlug } from '../../services/getPost';
 import { getPostsInMongo } from '../../services/getPosts';
-import { useSession } from '../../src/session';
 
 interface PageProps {
   post: Post;
@@ -25,7 +26,7 @@ interface PageProps {
   comments: Comment[];
 }
 
-export default function (props: PageProps) {
+export default function PostPage(props: PageProps) {
   const { post, mdxSource } = props;
   const postId = parsePost(post)._id;
   const [shouldHideWhiteLogo, setShouldHideWhiteLogo] = useState(false);

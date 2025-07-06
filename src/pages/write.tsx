@@ -1,15 +1,12 @@
-import { Button, Input, Note, Textarea } from '@geist-ui/core';
-import jwt from 'jsonwebtoken';
-import { NextPageContext } from 'next';
+import { Button, Input, Note } from '@geist-ui/core';
 import { MDXRemote } from 'next-mdx-remote';
 import { serialize } from 'next-mdx-remote/serialize';
 import { useEffect, useState } from 'react';
-import { Edit3, Eye, Save } from 'react-feather';
+import { Edit3, Save } from 'react-feather';
 
 import ErrorBoundary from '../components/ErrorBoundary';
-import User from '../models/user';
 
-export default function () {
+export default function Write() {
   const [input, setInput] = useState<string>('');
   const [mdxSource, setMdxSource] = useState<any>(null);
   const [error, setError] = useState<string>();

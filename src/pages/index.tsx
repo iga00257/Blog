@@ -2,17 +2,16 @@ import cx from 'classnames';
 import { GetStaticProps } from 'next';
 import Link from 'next/link';
 
-import PageHead from '../components/PageHead';
-import PostCard from '../components/PostCard';
-import SocialLinks from '../components/SocialLinks';
-import { GOOGLE_OAUTH_CLIENT_ID } from '../config.client';
-import Post, { parsePost, serializePost } from '../models/post';
-import { getPostsInMongo } from '../services/getPosts';
-import { GRADIENTS } from '../utils/colors';
+import PageHead from '@/components/PageHead';
+import PostCard from '@/components/PostCard';
+import SocialLinks from '@/components/SocialLinks';
+import { GOOGLE_OAUTH_CLIENT_ID } from '@/constants/config.client';
+import Post, { parsePost, serializePost } from '@/models/post';
+import { getPostsInMongo } from '@/services/getPosts';
 
 type Card = { type: 'Article'; data: Post; key: string };
 
-export default function (props: { posts: Post[] }) {
+export default function Home(props: { posts: Post[] }) {
   const data = props.posts.map(parsePost);
 
   const cards: Card[] = data.map((post) => ({

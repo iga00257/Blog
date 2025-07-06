@@ -24,6 +24,39 @@ function code({ className, ...props }: any) {
     <code className={className} {...props} />
   );
 }
+const ImageComponent = (props: any) => {
+  const [isLoaded, setLoaded] = useState(false);
+  useEffect(() => {
+    setLoaded(true);
+  }, []);
+  if (props.src.startsWith('https://www.youtube.com/embed/')) {
+    return (
+      <>
+        <iframe
+          src={props.src}
+          className='h-96 w-full rounded-xl shadow-lg transition-all duration-200 hover:shadow-2xl lg:hover:scale-105'
+          title='YouTube video player'
+          allow='accelerometer; clipboard-write; gyroscope; picture-in-picture'
+          allowFullScreen
+        />
+        {isLoaded && <span className='text-center text-xs opacity-50'>{props.alt}</span>}
+      </>
+    );
+  }
+
+  return (
+    <>
+      <img
+        src={props.src}
+        alt={props.alt}
+        className='mt-16 rounded-xl shadow-lg transition-all duration-200 hover:shadow-2xl lg:hover:scale-105'
+      />
+      {isLoaded && (
+        <span className='mb-16 text-center text-xs leading-tight opacity-50'>{props.alt}</span>
+      )}
+    </>
+  );
+};
 
 const mdxComponents = {
   Note,
@@ -37,40 +70,7 @@ const mdxComponents = {
   ),
   pre: (props: any) => <pre className='mdx-rendered' {...props} />,
   code,
-  img: (props: any) => {
-    const [isLoaded, setLoaded] = useState(false);
-    useEffect(() => {
-      setLoaded(true);
-    }, []);
-
-    if (props.src.startsWith('https://www.youtube.com/embed/')) {
-      return (
-        <>
-          <iframe
-            src={props.src}
-            className='h-96 w-full rounded-xl shadow-lg transition-all duration-200 hover:shadow-2xl lg:hover:scale-105'
-            title='YouTube video player'
-            allow='accelerometer; clipboard-write; gyroscope; picture-in-picture'
-            allowFullScreen
-          />
-          {isLoaded && <span className='text-center text-xs opacity-50'>{props.alt}</span>}
-        </>
-      );
-    }
-
-    return (
-      <>
-        <img
-          src={props.src}
-          alt={props.alt}
-          className='mt-16 rounded-xl shadow-lg transition-all duration-200 hover:shadow-2xl lg:hover:scale-105'
-        />
-        {isLoaded && (
-          <span className='mb-16 text-center text-xs leading-tight opacity-50'>{props.alt}</span>
-        )}
-      </>
-    );
-  },
+  img: ImageComponent,
 };
 
 export default mdxComponents as any;
