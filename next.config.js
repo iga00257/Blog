@@ -6,12 +6,27 @@ const withBundleAnalyzer = require('@next/bundle-analyzer')({
 const nextConfig = {
   reactStrictMode: true,
   images: {
-    domains: [
-      'images.unsplash.com',
-      'i.imgur.com',
-      'image.api.playstation.com',
-      'kinsta.com',
-      'miro.medium.com',
+    remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: 'images.unsplash.com',
+      },
+      {
+        protocol: 'https',
+        hostname: 'i.imgur.com',
+      },
+      {
+        protocol: 'https',
+        hostname: 'image.api.playstation.com',
+      },
+      {
+        protocol: 'https',
+        hostname: 'kinsta.com',
+      },
+      {
+        protocol: 'https',
+        hostname: 'miro.medium.com',
+      },
     ],
   },
 };

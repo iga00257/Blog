@@ -67,10 +67,18 @@ export default function Home(props: { posts: Post[] }) {
 }
 
 export const getStaticProps: GetStaticProps = async () => {
-  let postsInMongo: any = await getPostsInMongo();
-  postsInMongo = postsInMongo.map(serializePost);
-  return {
-    props: { posts: postsInMongo },
-    revalidate: 10,
-  };
+  try {
+    let postsInMongo: any = await getPostsInMongo();
+    postsInMongo = postsInMongo.map(serializePost);
+    return {
+      props: { posts: postsInMongo },
+      revalidate: 10,
+    };
+  } catch (error) {
+    console.warn('Database connection failed during build, using empty posts:', error);
+    return {
+      props: { posts: [] },
+      revalidate: 10,
+    };
+  }
 };

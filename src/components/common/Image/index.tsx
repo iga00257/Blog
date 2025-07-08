@@ -80,6 +80,4 @@ function ImageComponent(props: ImageProps) {
   );
 }
 
-// ImageComponent.defaultProps = defaultProps
-
 export default ImageComponent;

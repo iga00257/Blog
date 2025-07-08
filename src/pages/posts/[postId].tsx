@@ -402,19 +402,28 @@ function ArticleSkeleton() {
 }
 
 export async function getStaticPaths() {
-  const posts = await getPostsInMongo();
-  const paths = posts.map((p) => ({ params: { postId: p.slug } }));
-  return {
-    paths,
-    fallback: 'blocking',
-  };
+  try {
+    const posts = await getPostsInMongo();
+    const paths = posts.map((p) => ({ params: { postId: p.slug } }));
+    return {
+      paths,
+      fallback: 'blocking',
+    };
+  } catch (error) {
+    console.warn('Database connection failed during build, using empty paths:', error);
+    return {
+      paths: [],
+      fallback: 'blocking',
+    };
+  }
 }
 
 export const getStaticProps: GetStaticProps = async (context) => {
   const postId = context.params?.postId;
   if (typeof postId !== 'string') return { notFound: true };
-  if (!postId.match(/^[a-f\d]{24}$/i)) {
-    try {
+
+  try {
+    if (!postId.match(/^[a-f\d]{24}$/i)) {
       const post = await getPostBySlug(postId);
       if (!post) {
         return { notFound: true };
@@ -427,7 +436,6 @@ export const getStaticProps: GetStaticProps = async (context) => {
       return {
         revalidate: 10,
         props: {
-          key: postId,
           postId,
           post: serializePost(post),
           mdxSource,
@@ -441,12 +449,8 @@ export const getStaticProps: GetStaticProps = async (context) => {
           }),
         },
       };
-    } catch (error) {
-      console.error(error);
-      return { notFound: true };
     }
-  }
-  try {
+
     const post = await getPost(postId);
     return {
       redirect: {
@@ -455,7 +459,7 @@ export const getStaticProps: GetStaticProps = async (context) => {
       },
     };
   } catch (error) {
-    console.error(error);
+    console.error('Error in getStaticProps:', error);
     return { notFound: true };
   }
 };
