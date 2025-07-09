@@ -1,6 +1,6 @@
 import { GetServerSideProps } from 'next';
 
-import links from '@/links';
+import links from '@/constants/links';
 
 export default () => null;
 

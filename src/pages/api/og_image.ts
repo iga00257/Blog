@@ -44,7 +44,7 @@ export default async function generateImage(req: any, res: any) {
     ctx.save();
     ctx.fillStyle = COLORS.WHITE;
     ctx.font = '800 64px NotoSansTC-Bold';
-    printAt(ctx, 'Yuanlin', 96, 180, 96, WIDTH, 64);
+    printAt(ctx, 'Derrick Liu', 96, 180, 96, WIDTH, 64);
     ctx.fillStyle = COLORS.SECONDARY;
     ctx.font = '800 48px NotoSansTC-Bold';
     printAt(ctx, 'Blog', 340, 180, 96, WIDTH, 48);

@@ -32,14 +32,6 @@ export default function Card() {
               <SocialLinks />
             </div>
           </div>
-          <a
-            href='https://yuanlinlin.notion.site/6ceac3a80f684708ae8efeb5742a8335'
-            className='mt-12 cursor-pointer text-center text-blue-500'
-            target='_blank'
-            rel='noreferrer'
-          >
-            作品集
-          </a>
 
           <div className='absolute bottom-12 left-0 w-full'>
             <Link href='/'>

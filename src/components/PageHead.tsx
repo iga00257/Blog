@@ -28,7 +28,7 @@ function PageHead(props: Props) {
         name='keywords'
         content={
           props.keywords?.join(', ') ||
-          'React, Javascript, Typescript, 網站開發, 軟體開發, 前端, 後端, UI, UX, Go, Golang, Python, Django, Blog, 部落格, Yuanlin, 劉穎多, html, css'
+          'React, Javascript, Typescript, 網站開發, 軟體開發, 前端, 後端, UI, UX, Go, Golang, Python, Blog, 部落格, 劉穎多, html, css'
         }
       />
       <meta name='author' content='Derrick Liu 劉穎多' />

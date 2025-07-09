@@ -1,4 +1,4 @@
-import { GitHub, Globe } from 'react-feather';
+import { GitHub } from 'react-feather';
 
 interface Props {
   color?: string;
@@ -7,13 +7,6 @@ interface Props {
 function SocialLinks(props: Props) {
   return (
     <div className='flex items-center opacity-70 lg:mt-4'>
-      <a href='https://portfolio.yuanlin.dev' target='_blank' rel='noreferrer'>
-        <Globe
-          size={18}
-          className='transition hover:text-primary dark:hover:text-primary'
-          color={props.color}
-        />
-      </a>
       <a
         href='https://github.com/iga00257'
         className='ml-4 transition hover:text-primary dark:hover:text-primary'

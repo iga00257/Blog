@@ -11,6 +11,7 @@ import { ArrowLeft, Heart } from 'react-feather';
 
 import PageHead from '@/components/PageHead';
 import SocialLinks from '@/components/SocialLinks';
+import { envConfigs } from '@/constants/config';
 import { GOOGLE_OAUTH_CLIENT_ID } from '@/constants/config.client';
 import { useSession } from '@/hooks/session';
 import Comment from '@/models/comment';
@@ -132,6 +133,7 @@ export default function PostPage(props: PageProps) {
         title={(post ? post.title : 'Blog') + '| Derrick Liu 劉穎多'}
         type='article'
         description={post?.content.substring(0, 100) + '...'}
+        canonicalUrl={`https://${envConfigs.DOMAIN_URL}/posts/${post.slug}`}
       />
       <div
         className={cx(

@@ -5,6 +5,7 @@ import Link from 'next/link';
 import PageHead from '@/components/PageHead';
 import PostCard from '@/components/PostCard';
 import SocialLinks from '@/components/SocialLinks';
+import { envConfigs } from '@/constants/config';
 import { GOOGLE_OAUTH_CLIENT_ID } from '@/constants/config.client';
 import Post, { parsePost, serializePost } from '@/models/post';
 import { getPostsInMongo } from '@/services/getPosts';
@@ -22,7 +23,7 @@ export default function Home(props: { posts: Post[] }) {
 
   return (
     <div className='min-h-screen bg-white text-text-primary transition-colors duration-300 dark:bg-dark-bg dark:text-dark-text-primary'>
-      <PageHead canonicalUrl='https://yual.in' />
+      <PageHead canonicalUrl={`https://${envConfigs.DOMAIN_URL}`} />
       <div className='container mx-auto flex flex-row flex-wrap px-6 py-8 lg:px-12 lg:pb-24 2xl:px-32'>
         <div className='mt-4 lg:mt-12'>
           <Link href='/' scroll passHref>

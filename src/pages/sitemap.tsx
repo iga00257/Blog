@@ -12,7 +12,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     postsInMongo.map((e) => {
       urls += `<url>
           <loc>
-              https://yual.in/posts/${e.slug}
+              https://blog.tutordraw.io/posts/${e.slug}
           </loc>
           <priority>0.8</priority>
           <changefreq>daily</changefreq>
