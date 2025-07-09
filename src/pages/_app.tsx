@@ -1,13 +1,15 @@
-import { Avatar, GeistProvider, useToasts } from '@geist-ui/core';
 import { MDXProvider } from '@mdx-js/react';
 import type { AppProps } from 'next/app';
 import { useRouter } from 'next/router';
 import NProgress from 'nprogress';
 import 'nprogress/nprogress.css';
 import { useEffect, useState } from 'react';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 import ThemeToggle from '@/components/ThemeToggle';
 import mdxComponents from '@/components/mdx';
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { SessionProvider, useSession } from '@/hooks/session';
 import User from '@/models/user';
 import '@/styles/globals.css';
@@ -67,32 +69,47 @@ function MyApp({ Component, pageProps }: AppProps) {
 
   return (
     <SessionProvider value={{ session }}>
-      <GeistProvider>
-        <MDXProvider components={mdxComponents}>
-          <SessionRestoreNotification />
-          <ThemeToggle />
-          <Component {...pageProps} />
-        </MDXProvider>
-      </GeistProvider>
+      <MDXProvider components={mdxComponents}>
+        <SessionRestoreNotification />
+        <ThemeToggle />
+        <Component {...pageProps} />
+        <ToastContainer
+          autoClose={5000}
+          hideProgressBar={false}
+          closeOnClick
+          rtl={false}
+          pauseOnFocusLoss
+          draggable
+          pauseOnHover
+          theme='light'
+          icon={false}
+        />
+      </MDXProvider>
     </SessionProvider>
   );
 }
 
 function SessionRestoreNotification() {
   const session = useSession();
-  const { setToast } = useToasts();
   useEffect(() => {
     if (session?.session) {
-      setToast({
-        text: (
-          <div className='flex flex-row items-center'>
-            <Avatar src={session.session.avatarUrl} />
-            <p className='ml-4'>哈囉， {session.session.name}！歡迎回來我的 Blog。</p>
-          </div>
-        ),
-        type: 'success',
-        delay: 5000,
-      });
+      toast.info(
+        <div className='flex gap-2'>
+          <Avatar className='h-8 w-8'>
+            <AvatarImage src={session.session.avatarUrl} />
+            <AvatarFallback className='text-sm'>{session.session.name.charAt(0)}</AvatarFallback>
+          </Avatar>
+          <p>哈囉，{session.session.name}！歡迎回來我的 Blog。</p>
+        </div>,
+        {
+          position: 'top-right',
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+        },
+      );
     }
   }, [session?.session?.email]);
   return null;

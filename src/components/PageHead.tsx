@@ -1,5 +1,7 @@
 import Head from 'next/head';
 
+import { envConfigs } from '@/constants/config';
+
 interface Props {
   title?: string;
   description?: string;
@@ -44,7 +46,7 @@ function PageHead(props: Props) {
       />
       <meta
         property='og:image'
-        content={props?.imageUrl || 'https://i.imgur.com/iZI6XtN.jpg'}
+        content={props?.imageUrl || `https://${envConfigs.DOMAIN_URL}/og_image.png`}
         key='image'
       />
       <meta name='twitter:card' content='summary_large_image' />

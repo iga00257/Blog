@@ -1,10 +1,12 @@
-import { Button, Input, Note } from '@geist-ui/core';
+import { Note } from '@geist-ui/core';
 import { MDXRemote } from 'next-mdx-remote';
 import { serialize } from 'next-mdx-remote/serialize';
 import { useEffect, useState } from 'react';
 import { Edit3, Save } from 'react-feather';
 
 import ErrorBoundary from '../components/ErrorBoundary';
+import { Button } from '../components/ui/button';
+import { Input } from '../components/ui/input';
 
 export default function Write() {
   const [input, setInput] = useState<string>('');
@@ -88,45 +90,37 @@ export default function Write() {
             <div className='mb-4 flex items-center justify-between'>
               <h2 className='text-lg font-bold'>寫作編輯器</h2>
               <div className='flex gap-2'>
-                <Button
-                  scale={1 / 2}
-                  icon={<Edit3 size={16} />}
-                  onClick={() => setShowForm(!showForm)}
-                  {...({} as any)}
-                >
+                <Button variant='outline' size='sm' onClick={() => setShowForm(!showForm)}>
+                  <Edit3 size={16} className='mr-2' />
                   {showForm ? '隱藏' : '設置'}
                 </Button>
-                <Button
-                  type='success'
-                  scale={1 / 2}
-                  icon={<Save size={16} />}
-                  loading={isSaving}
-                  onClick={handleSave}
-                  {...({} as any)}
-                >
-                  保存文章
+                <Button variant='default' size='sm' disabled={isSaving} onClick={handleSave}>
+                  <Save size={16} className='mr-2' />
+                  {isSaving ? '保存中...' : '保存文章'}
                 </Button>
               </div>
             </div>
 
             {showForm && (
               <div className='space-y-3'>
-                <Input
-                  label='文章標題'
-                  placeholder='輸入文章標題...'
-                  value={title}
-                  onChange={(e) => setTitle(e.target.value)}
-                  width='100%'
-                  {...({} as any)}
-                />
-                <Input
-                  label='封面圖片 URL'
-                  placeholder='可選：輸入封面圖片 URL'
-                  value={coverImageUrl}
-                  onChange={(e) => setCoverImageUrl(e.target.value)}
-                  width='100%'
-                  {...({} as any)}
-                />
+                <div>
+                  <label className='text-sm font-medium'>文章標題</label>
+                  <Input
+                    placeholder='輸入文章標題...'
+                    value={title}
+                    onChange={(e: React.ChangeEvent<HTMLInputElement>) => setTitle(e.target.value)}
+                  />
+                </div>
+                <div>
+                  <label className='text-sm font-medium'>封面圖片 URL</label>
+                  <Input
+                    placeholder='可選：輸入封面圖片 URL'
+                    value={coverImageUrl}
+                    onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                      setCoverImageUrl(e.target.value)
+                    }
+                  />
+                </div>
               </div>
             )}
           </div>

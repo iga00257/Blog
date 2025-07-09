@@ -1,4 +1,4 @@
-import { Button, ButtonGroup, Description } from '@geist-ui/core';
+import { Button } from '@/components/ui/button';
 
 interface Props {
   questionName: string;
@@ -8,19 +8,18 @@ interface Props {
 
 function SelectQuestion(props: Props) {
   return (
-    <div className='mdx-component my-12 w-full rounded-lg bg-zinc-50 p-2 dark:bg-dark-bg-secondary'>
-      <Description
-        style={{ margin: '16px 8px' }}
-        title={props.questionName}
-        content={props.question}
-      />
-      <ButtonGroup vertical width='100%'>
+    <div className='mdx-component my-12 w-full rounded-lg bg-zinc-50 p-4 dark:bg-dark-bg-secondary'>
+      <div className='mb-4'>
+        <h3 className='text-lg font-semibold'>{props.questionName}</h3>
+        <p className='text-sm text-muted-foreground'>{props.question}</p>
+      </div>
+      <div className='flex flex-col gap-2'>
         {props.options.map((opt, i) => (
-          <Button key={i} style={{ textAlign: 'left' }} {...({} as any)}>
+          <Button key={i} variant='outline' className='justify-start text-left'>
             {opt}
           </Button>
         ))}
-      </ButtonGroup>
+      </div>
     </div>
   );
 }

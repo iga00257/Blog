@@ -9,7 +9,7 @@ function SocialLinks(props: Props) {
     <div className='flex items-center opacity-70 lg:mt-4'>
       <a
         href='https://github.com/iga00257'
-        className='ml-4 transition hover:text-primary dark:hover:text-primary'
+        className='transition hover:text-primary dark:hover:text-primary'
         target='_blank'
         rel='noreferrer'
       >

@@ -1,5 +1,6 @@
-import { Button } from '@geist-ui/core';
 import { Component } from 'react';
+
+import { Button } from './ui/button';
 
 class ErrorBoundary extends Component<any, any> {
   constructor(props: any) {
@@ -14,11 +15,9 @@ class ErrorBoundary extends Component<any, any> {
   render() {
     if (this.state.hasError) {
       return (
-        <div>
-          <h2>Oops, there is an error!</h2>
-          <Button onClick={() => this.setState({ hasError: false })} {...({} as any)}>
-            Try again?
-          </Button>
+        <div className='p-4 text-center'>
+          <h2 className='mb-4 text-lg font-semibold'>Oops, there is an error!</h2>
+          <Button onClick={() => this.setState({ hasError: false })}>Try again?</Button>
         </div>
       );
     }

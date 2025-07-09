@@ -12,7 +12,7 @@ export default function Card() {
           name='og:description'
           content='本頁是 Derrick Liu 劉穎多的電子名片，有自我介紹、作品集與聯繫方式。'
         />
-        <meta name='og:image' content='/card-og.png' />
+        <meta name='og:image' content='/og_image.png' />
         <meta name='twitter:card' content='summary_large_image' />
       </Head>
       <div className='mx-auto w-full px-16 pb-24 lg:w-[650px] lg:px-4'>

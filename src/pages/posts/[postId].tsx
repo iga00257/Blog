@@ -1,4 +1,3 @@
-import { Avatar, useToasts } from '@geist-ui/core';
 import cx from 'classnames';
 import { ObjectId } from 'mongodb';
 import { GetStaticProps } from 'next';
@@ -8,9 +7,11 @@ import Image from 'next/legacy/image';
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
 import { ArrowLeft, Heart } from 'react-feather';
+import { toast } from 'react-toastify';
 
 import PageHead from '@/components/PageHead';
 import SocialLinks from '@/components/SocialLinks';
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { envConfigs } from '@/constants/config';
 import { GOOGLE_OAUTH_CLIENT_ID } from '@/constants/config.client';
 import { useSession } from '@/hooks/session';
@@ -31,7 +32,6 @@ export default function PostPage(props: PageProps) {
   const postId = parsePost(post)._id;
   const [shouldHideWhiteLogo, setShouldHideWhiteLogo] = useState(false);
   const session = useSession();
-  const toast = useToasts();
   const [posts, setPosts] = useState<Post[]>([]);
   const [likes, setLikes] = useState<{
     userLike: number;
@@ -57,9 +57,17 @@ export default function PostPage(props: PageProps) {
       }
     } catch (e) {
       console.error(e);
-      toast.setToast({
-        text: '發生錯誤，暫時無法留言！',
-        type: 'error',
+      toast.error('發生錯誤，暫時無法留言！', {
+        position: 'top-right',
+        autoClose: 3000,
+        hideProgressBar: true,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        style: {
+          fontSize: '14px',
+          padding: '8px 12px',
+        },
       });
     }
   }
@@ -222,11 +230,14 @@ export default function PostPage(props: PageProps) {
               {likes.likeCount === 0 && (
                 <p className='ml-4 mr-6 text-accent'>給這篇文章一個愛心吧！</p>
               )}
-              <Avatar.Group>
+              <div className='flex -space-x-2'>
                 {likes.userAvatars?.map((avatar, index) => (
-                  <Avatar key={index} src={avatar} stacked />
+                  <Avatar key={index} className='h-6 w-6 border-2 border-white'>
+                    <AvatarImage src={avatar} alt={`User ${index + 1}`} />
+                    <AvatarFallback>U</AvatarFallback>
+                  </Avatar>
                 ))}
-              </Avatar.Group>
+              </div>
             </button>
           </div>
         )}

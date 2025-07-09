@@ -11,7 +11,6 @@
 - **數據庫**: MongoDB
 - **樣式**: Tailwind CSS
 - **MDX**: next-mdx-remote
-- **UI 組件**: @geist-ui/core
 
 ### 主要功能
 
