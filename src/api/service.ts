@@ -7,7 +7,7 @@ import mapValues from 'lodash/fp/mapValues';
 import omitBy from 'lodash/fp/omitBy';
 
 // Constants
-import { envConfigs } from '@/constants/configs';
+import { envConfigs } from '@/constants/config';
 import { STORAGE_DATA } from '@/constants/storageData';
 import { CASES, transformKeys } from '@/utils/case';
 // Libs
