@@ -148,7 +148,7 @@ class Service<TResponse = unknown, TRequest = unknown>
         })
       : this.config;
 
-    const axiosInstance = axios.create(apiConfig as AxiosRequestConfig);
+    const axiosInstance = axios.create(apiConfig);
 
     axiosInstance.interceptors.request.use(
       (config) => {
