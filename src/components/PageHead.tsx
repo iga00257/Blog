@@ -1,6 +1,6 @@
 import Head from 'next/head';
 
-import { envConfigs } from '@/constants/config';
+import { envConfigs } from '@/constants/configs';
 
 interface Props {
   title?: string;

@@ -5,8 +5,8 @@ import Link from 'next/link';
 import PageHead from '@/components/PageHead';
 import PostCard from '@/components/PostCard';
 import SocialLinks from '@/components/SocialLinks';
-import { envConfigs } from '@/constants/config';
 import { GOOGLE_OAUTH_CLIENT_ID } from '@/constants/config.client';
+import { envConfigs } from '@/constants/configs';
 import Post, { parsePost, serializePost } from '@/models/post';
 import { getPostsInMongo } from '@/services/getPosts';
 

@@ -4,6 +4,8 @@ import { serialize } from 'next-mdx-remote/serialize';
 import { useEffect, useState } from 'react';
 import { Edit3, Save } from 'react-feather';
 
+import { addNewPost } from '@/api/addNewPost';
+
 import ErrorBoundary from '../components/ErrorBoundary';
 import { Button } from '../components/ui/button';
 import { Input } from '../components/ui/input';
@@ -15,6 +17,7 @@ export default function Write() {
   const [success, setSuccess] = useState<string>();
   const [title, setTitle] = useState<string>('');
   const [coverImageUrl, setCoverImageUrl] = useState<string>('');
+  const [slug, setSlug] = useState<string>('');
   const [isSaving, setIsSaving] = useState<boolean>(false);
   const [showForm, setShowForm] = useState<boolean>(false);
 
@@ -43,36 +46,31 @@ export default function Write() {
       setError('請輸入文章內容');
       return;
     }
+    if (!slug.trim()) {
+      setError('請輸入文章 URL');
+      return;
+    }
 
     setIsSaving(true);
     setError(undefined);
     setSuccess(undefined);
 
     try {
-      const response = await fetch('/api/posts/create', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          title: title.trim(),
-          content: input.trim(),
-          coverImageUrl: coverImageUrl.trim() || undefined,
-        }),
-      });
+      const data = {
+        title: title.trim(),
+        content: input.trim(),
+        coverImageUrl: coverImageUrl.trim() || '',
+        slug: slug.trim(),
+      };
+      console.log('data', data);
+      const response = await addNewPost(data);
 
-      const data = await response.json();
-
-      if (response.ok) {
-        setSuccess(`文章保存成功！Slug: ${data.slug}`);
-        // 清除 localStorage
-        window.localStorage.removeItem('note');
-        setInput('');
-        setTitle('');
-        setCoverImageUrl('');
-      } else {
-        setError(data.error || '保存失敗');
-      }
+      setSuccess(`文章保存成功！Slug: ${response.slug}`);
+      // 清除 localStorage
+      window.localStorage.removeItem('note');
+      setInput('');
+      setTitle('');
+      setCoverImageUrl('');
     } catch (_err: any) {
       console.error(_err);
       setError('網絡錯誤，請稍後再試');
@@ -104,16 +102,33 @@ export default function Write() {
             {showForm && (
               <div className='space-y-3'>
                 <div>
-                  <label className='text-sm font-medium'>文章標題</label>
+                  <label className='text-sm font-medium' htmlFor='title'>
+                    文章標題
+                  </label>
                   <Input
+                    id='title'
                     placeholder='輸入文章標題...'
                     value={title}
                     onChange={(e: React.ChangeEvent<HTMLInputElement>) => setTitle(e.target.value)}
                   />
                 </div>
                 <div>
-                  <label className='text-sm font-medium'>封面圖片 URL</label>
+                  <label className='text-sm font-medium' htmlFor='title'>
+                    Url pathname (slug)
+                  </label>
                   <Input
+                    id='slug'
+                    placeholder='輸入文章標題...'
+                    value={slug}
+                    onChange={(e: React.ChangeEvent<HTMLInputElement>) => setSlug(e.target.value)}
+                  />
+                </div>
+                <div>
+                  <label className='text-sm font-medium' htmlFor='coverImageUrl'>
+                    封面圖片 URL
+                  </label>
+                  <Input
+                    id='coverImageUrl'
                     placeholder='可選：輸入封面圖片 URL'
                     value={coverImageUrl}
                     onChange={(e: React.ChangeEvent<HTMLInputElement>) =>

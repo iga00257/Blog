@@ -5,11 +5,13 @@ export const configs = {
   [ENVIORNMENT.DEV]: {
     GOOGLE_CLIENT_SECRET: env('GOOGLE_CLIENT_SECRET', ''),
     DOMAIN_URL: 'blog.tutordraw.io',
+    apiUrl: 'http://localhost:3000/api',
   },
 
   [ENVIORNMENT.PROD]: {
     GOOGLE_CLIENT_SECRET: env('GOOGLE_CLIENT_SECRET', ''),
     DOMAIN_URL: 'blog.tutordraw.io',
+    apiUrl: 'https://blog.tutordraw.io/api',
   },
 };
 

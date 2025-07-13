@@ -9,21 +9,13 @@ export default async function (req: NextApiRequest, res: NextApiResponse) {
     return;
   }
 
-  const { title, content, coverImageUrl } = req.body;
+  const { title, content, coverImageUrl, slug } = req.body;
 
   // 驗證必填字段
   if (!title || !content) {
     res.status(400).json({ error: 'Title and content are required' });
     return;
   }
-
-  // 生成 slug
-  const slug = title
-    .toLowerCase()
-    .replace(/[^a-z0-9\s-]/g, '') // 移除特殊字符
-    .replace(/\s+/g, '-') // 空格轉換為連字符
-    .replace(/-+/g, '-') // 多個連字符轉換為單個
-    .trim();
 
   const mongo = await getMongoClient();
 
