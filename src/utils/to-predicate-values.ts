@@ -1,52 +1,32 @@
-type Predicator = (value: unknown) => unknown;
-type ObjectComparator = (value: unknown) => boolean;
+/* eslint-disable @typescript-eslint/no-explicit-any */
+type Predicator = (value: any) => any;
+type ObjectComparator = (value: any) => boolean;
 
 interface Options {
   objectComparator?: ObjectComparator;
-  maxDepth?: number;
 }
 
-export default function toPredicateValues<T = unknown>(
-  data: T,
+export default function toPredicateValues(
+  data: any,
   predicator: Predicator,
   options: Options = {},
-): T {
-  const {
-    objectComparator = (value: unknown) => typeof value === 'object' && value !== null,
-    maxDepth = 10,
-  } = options;
+): any {
+  const { objectComparator = (value: any) => typeof value === 'object' && value !== null } =
+    options;
 
-  // 处理边界条件
-  if (data === null || data === undefined) {
-    return data;
-  }
-
-  // 防止无限递归
-  if (maxDepth <= 0) {
-    return predicator(data) as T;
-  }
-
-  // 处理数组
   if (Array.isArray(data)) {
-    return data.map((item) =>
-      toPredicateValues(item, predicator, { ...options, maxDepth: maxDepth - 1 }),
-    ) as T;
+    return data.map((item) => toPredicateValues(item, predicator, options));
   }
 
-  // 处理对象
   if (objectComparator(data)) {
-    const result: Record<string, unknown> = {};
-    console.log('data', data);
-
-    for (const key of Object.keys(data as Record<string, unknown>)) {
-      const value = (data as Record<string, unknown>)[key];
-      result[key] = toPredicateValues(value, predicator, { ...options, maxDepth: maxDepth - 1 });
-    }
-    console.log('result', result);
-
-    return result as T;
+    return Object.keys(data).reduce(
+      (acc, key) => ({
+        ...acc,
+        [key]: toPredicateValues(data[key], predicator, options),
+      }),
+      {},
+    );
   }
 
-  // 处理基本类型
-  return predicator(data) as T;
+  return predicator(data);
 }
