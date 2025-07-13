@@ -29,7 +29,7 @@ export default async function (req: NextApiRequest, res: NextApiResponse) {
     }
 
     // 插入新文章
-    const result = await mongo
+    await mongo
       .db('blog')
       .collection('posts')
       .insertOne({
@@ -48,9 +48,13 @@ export default async function (req: NextApiRequest, res: NextApiResponse) {
 
     res.status(201).json({
       success: true,
-      postId: result.insertedId,
-      slug,
       message: 'Post created successfully',
+      data: {
+        slug,
+        title,
+        content,
+        coverImageUrl,
+      },
     });
   } catch (error) {
     console.error('Error creating post:', error);

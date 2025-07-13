@@ -48,6 +48,27 @@ interface IConfig {
   method: Method;
 }
 
+const predicator: Predicator = (object) => {
+  // 处理字符串类型
+  if (typeof object === 'string') {
+    return object.trim();
+  }
+
+  if (Array.isArray(object)) {
+    return object.filter((value) => !isUndefined(value));
+  }
+
+  // 只对对象类型应用 flow 处理
+  if (typeof object === 'object' && object !== null) {
+    return flow(
+      omitBy(isUndefined),
+      mapValues((value) => (typeof value === 'string' ? value.trim() : value)),
+    )(object);
+  }
+
+  return object;
+};
+
 class Service<TResponse = unknown, TRequest = unknown>
   implements IServicePrototype<TResponse, TRequest>
 {
@@ -200,28 +221,6 @@ class Service<TResponse = unknown, TRequest = unknown>
   handleParameter<T extends Record<string, unknown> & TRequest>(parameter: T): T {
     const denormalizedParameter = this.denormalizer(parameter);
     const casedParameter = transformKeys(denormalizedParameter, this.getOption().toRequestCase);
-    console.log('casedParameter', casedParameter);
-
-    const predicator: Predicator = (object) => {
-      // 处理字符串类型
-      if (typeof object === 'string') {
-        return object.trim();
-      }
-
-      if (Array.isArray(object)) {
-        return object.filter((value) => !isUndefined(value));
-      }
-
-      // 只对对象类型应用 flow 处理
-      if (typeof object === 'object' && object !== null) {
-        return flow(
-          omitBy(isUndefined),
-          mapValues((value) => (typeof value === 'string' ? value.trim() : value)),
-        )(object);
-      }
-
-      return object;
-    };
 
     const predicatedParameter = toPredicateValues(casedParameter, predicator);
     console.log('predicatedParameter', predicatedParameter);
@@ -252,27 +251,6 @@ class Service<TResponse = unknown, TRequest = unknown>
   handleSuccess(casedData: unknown): TResponse {
     const normalizedData = this.normalizer(casedData as TResponse);
 
-    const predicator: Predicator = (object) => {
-      // 处理字符串类型
-      if (typeof object === 'string') {
-        return object.trim();
-      }
-
-      if (Array.isArray(object)) {
-        return object.filter((value) => !isUndefined(value));
-      }
-
-      // 只对对象类型应用 flow 处理
-      if (typeof object === 'object' && object !== null) {
-        return flow(
-          omitBy(isUndefined),
-          mapValues((value) => (typeof value === 'string' ? value.trim() : value)),
-        )(object);
-      }
-
-      return object;
-    };
-
     const predicatedData = toPredicateValues(normalizedData, predicator);
 
     return predicatedData as TResponse;
@@ -290,7 +268,7 @@ class Service<TResponse = unknown, TRequest = unknown>
     const isAuthError = error.response?.status === 401;
     const errorData = {
       name: this.name,
-      status: error.response?.status || 500,
+      status: error.status || 500,
       message: isAuthError ? 'Unauthorized' : JSON.stringify(error.message),
     };
     throw errorData;
@@ -301,7 +279,6 @@ class Service<TResponse = unknown, TRequest = unknown>
     const requestConfig = this.getRequestConfig();
 
     this.showLogger(`${this.name}_REQUEST`, format(new Date(), 'yyyy-MM-dd HH:mm:ss'));
-    console.log(axiosInstance);
 
     return axiosInstance(requestConfig)
       .then((response) => this.handleResponse(response))

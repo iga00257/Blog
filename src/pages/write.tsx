@@ -62,7 +62,6 @@ export default function Write() {
         coverImageUrl: coverImageUrl.trim() || '',
         slug: slug.trim(),
       };
-      console.log('data', data);
       const response = await addNewPost(data);
 
       setSuccess(`文章保存成功！Slug: ${response.slug}`);
