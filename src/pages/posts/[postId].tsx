@@ -136,7 +136,7 @@ export default function PostPage(props: PageProps) {
   }, []);
 
   return (
-    <div className='bg-white text-text-primary transition-colors duration-300 dark:bg-dark-bg dark:text-dark-text-primary'>
+    <div className='bg-background text-foreground transition-colors duration-300'>
       <PageHead
         title={(post ? post.title : 'Blog') + '| Derrick Liu 劉穎多'}
         type='article'
@@ -223,10 +223,9 @@ export default function PostPage(props: PageProps) {
               <Heart
                 fill='currentColor'
                 fillOpacity={likes.userLike / 10 || 0}
-                color='currentColor'
                 className='text-accent transition group-active:scale-125'
               />
-              {likes.likeCount && <p className='ml-4 mr-6 text-accent'>{likes.likeCount}</p>}
+              {likes.likeCount > 0 && <p className='ml-1 mr-6 text-accent'>{likes.likeCount}</p>}
               {likes.likeCount === 0 && (
                 <p className='ml-4 mr-6 text-accent'>給這篇文章一個愛心吧！</p>
               )}
@@ -242,9 +241,9 @@ export default function PostPage(props: PageProps) {
           </div>
         )}
       </div>
-      <div className='w-full bg-zinc-50 py-16 dark:bg-dark-bg-secondary'>
+      <div className='w-full bg-muted py-16'>
         <div className='mx-auto w-full px-4 lg:w-[650px]'>
-          <p className='mb-4 text-center font-extrabold text-text-secondary opacity-60 dark:text-dark-text-secondary md:text-left'>
+          <p className='mb-4 text-center font-extrabold text-muted-foreground opacity-60 md:text-left'>
             分享你的看法
           </p>
           <div
@@ -257,17 +256,17 @@ export default function PostPage(props: PageProps) {
                 className='h-8 w-8 rounded-full'
               />
             ) : (
-              <div className='h-8 w-8 rounded-full bg-gray-200 dark:bg-dark-bg-tertiary' />
+              <div className='h-8 w-8 rounded-full bg-muted' />
             )}
             <input
-              className={`flex-grow rounded-lg border border-gray-200 bg-white px-4 py-2 text-text-primary dark:border-dark-border dark:bg-dark-bg-secondary dark:text-dark-text-primary ${!session.session ? 'cursor-pointer' : ''}`}
+              className={`flex-grow rounded-lg border bg-background px-4 py-2 text-foreground ${!session.session ? 'cursor-pointer' : ''}`}
               placeholder={session.session ? '' : '點擊即可登入並留言'}
               onClick={() => !session.session && login()}
               value={commentInput}
               onChange={(e) => setCommentInput(e.target.value)}
             />
             <button
-              className='shrink-0 rounded-lg bg-primary px-4 py-2 text-white transition-colors duration-200 hover:bg-primary-dark'
+              className='hover:bg-primary/90 shrink-0 rounded-lg bg-primary px-4 py-2 text-primary-foreground transition-colors duration-200'
               onClick={() => (!session.session ? login() : submitComment())}
             >
               留言
@@ -282,25 +281,23 @@ export default function PostPage(props: PageProps) {
                   alt='author-avatar'
                   className='h-8 w-8 rounded-full'
                 />
-                <p className='font-extrabold text-text-primary dark:text-dark-text-primary'>
-                  {comment.author.name}
-                </p>
-                <p className='text-text-secondary opacity-60 dark:text-dark-text-secondary'>
+                <p className='font-extrabold text-foreground'>{comment.author.name}</p>
+                <p className='text-muted-foreground opacity-60'>
                   {comment.createdAt.split('T')[0]}
                 </p>
               </div>
-              <p className='text-text-primary dark:text-dark-text-primary'>{comment.content}</p>
+              <p className='text-foreground'>{comment.content}</p>
             </div>
           ))}
 
           {comments && comments.length === 0 && (
-            <p className='text-center text-text-secondary opacity-60 dark:text-dark-text-secondary'>
+            <p className='text-center text-muted-foreground opacity-60'>
               暫無留言，你可以成為第一個留言的人！
             </p>
           )}
         </div>
       </div>
-      <div className='w-full bg-zinc-100 pb-32 pt-16 dark:bg-dark-bg-tertiary'>
+      <div className='bg-muted/50 w-full pb-32 pt-16'>
         <div className='mx-auto w-full px-4 lg:w-[650px]'>
           <div className='mt-12 flex flex-col items-center md:flex-row'>
             <img
@@ -309,13 +306,13 @@ export default function PostPage(props: PageProps) {
               className='h-24 w-24 rounded-full'
             />
             <div className='ml-0 mt-12 md:ml-12 md:mt-0'>
-              <p className='mb-4 text-center font-extrabold text-text-secondary opacity-60 dark:text-dark-text-secondary md:text-left'>
+              <p className='mb-4 text-center font-extrabold text-muted-foreground opacity-60 md:text-left'>
                 關於作者
               </p>
-              <p className='text-center text-2xl font-extrabold text-text-primary dark:text-dark-text-primary md:text-left'>
+              <p className='text-center text-2xl font-extrabold text-foreground md:text-left'>
                 Derrick Liu 劉穎多
               </p>
-              <p className='mt-6 mb-12 text-center text-text-secondary opacity-70 dark:text-dark-text-secondary md:text-left'>
+              <p className='mt-6 mb-12 text-center text-muted-foreground opacity-70 md:text-left'>
                 台灣新竹人，目前是全端開發工程師，熱愛產品設計與軟體開發。
               </p>
               <div className='flex justify-center md:justify-start'>
@@ -326,9 +323,9 @@ export default function PostPage(props: PageProps) {
         </div>
       </div>
       {posts && posts.length > 0 && (
-        <div className='w-full bg-zinc-200 pb-32 pt-16 dark:bg-dark-bg'>
+        <div className='w-full bg-background pb-32 pt-16'>
           <div className='mx-auto w-full px-4 lg:w-[650px]'>
-            <p className='mb-16 text-center font-extrabold text-text-primary dark:text-dark-text-primary md:text-left'>
+            <p className='mb-16 text-center font-extrabold text-foreground md:text-left'>
               你可能也會喜歡
             </p>
             {posts
@@ -344,13 +341,13 @@ export default function PostPage(props: PageProps) {
                       className='mr-8 h-48 w-full rounded-lg object-cover transition-all duration-500 group-hover:scale-105 md:w-48'
                     />
                     <div className='mt-4 flex-1 md:mt-0'>
-                      <p className='text-xl font-extrabold text-text-primary transition-all duration-700 group-hover:translate-x-2 dark:text-dark-text-primary'>
+                      <p className='text-xl font-extrabold text-foreground transition-all duration-700 group-hover:translate-x-2'>
                         {p.title}
                       </p>
-                      <p className='my-4 font-extrabold text-text-secondary opacity-40 transition-all duration-1000 group-hover:translate-x-4 dark:text-dark-text-secondary'>
+                      <p className='my-4 font-extrabold text-muted-foreground opacity-40 transition-all duration-1000 group-hover:translate-x-4'>
                         {p.createdAt.toLocaleDateString()}
                       </p>
-                      <p className='text-text-primary transition-all group-hover:opacity-100 dark:text-dark-text-primary lg:opacity-80'>
+                      <p className='text-foreground transition-all group-hover:opacity-100 lg:opacity-80'>
                         {p.content}
                       </p>
                     </div>
@@ -360,7 +357,7 @@ export default function PostPage(props: PageProps) {
             <Link href='/' scroll legacyBehavior>
               <div className='flex cursor-pointer'>
                 <ArrowLeft className='mr-4' />
-                <p className='text-text-primary dark:text-dark-text-primary'>回部落格首頁</p>
+                <p className='text-foreground'>回部落格首頁</p>
               </div>
             </Link>
           </div>
@@ -380,9 +377,9 @@ export default function PostPage(props: PageProps) {
 function AuthorSkeleton() {
   return (
     <div className='mt-8 flex flex-row items-center align-bottom'>
-      <div className='mr-4 h-8 w-8 animate-pulse rounded-full bg-zinc-500 dark:bg-dark-bg-tertiary' />
-      <div className='mr-4 h-6 w-64 animate-pulse rounded-lg bg-zinc-600 dark:bg-dark-bg-secondary' />
-      <div className='h-6 w-36 animate-pulse rounded-lg bg-zinc-700 dark:bg-dark-bg-tertiary' />
+      <div className='mr-4 h-8 w-8 animate-pulse rounded-full bg-muted' />
+      <div className='mr-4 h-6 w-64 animate-pulse rounded-lg bg-muted' />
+      <div className='h-6 w-36 animate-pulse rounded-lg bg-muted' />
     </div>
   );
 }
@@ -390,8 +387,8 @@ function AuthorSkeleton() {
 function TitleSkeleton() {
   return (
     <div>
-      <div className='h-8 w-full animate-pulse rounded-xl bg-zinc-600 dark:bg-dark-bg-secondary lg:h-14' />
-      <div className='mt-4 h-8 w-1/2 animate-pulse rounded-xl bg-zinc-600 dark:bg-dark-bg-secondary lg:h-14' />
+      <div className='h-8 w-full animate-pulse rounded-xl bg-muted lg:h-14' />
+      <div className='mt-4 h-8 w-1/2 animate-pulse rounded-xl bg-muted lg:h-14' />
     </div>
   );
 }
@@ -399,17 +396,17 @@ function TitleSkeleton() {
 function ArticleSkeleton() {
   return (
     <div>
-      <div className='h-4 w-full animate-pulse rounded-lg bg-zinc-200 dark:bg-dark-bg-secondary' />
-      <div className='mt-4 h-4 w-1/2 animate-pulse rounded-lg bg-zinc-200 dark:bg-dark-bg-secondary' />
-      <div className='mt-4 h-4 w-1/3 animate-pulse rounded-lg bg-zinc-200 dark:bg-dark-bg-secondary' />
-      <div className='mt-4 h-4 w-full animate-pulse rounded-lg bg-zinc-200 dark:bg-dark-bg-secondary' />
-      <div className='mt-4 h-4 w-1/4 animate-pulse rounded-lg bg-zinc-200 dark:bg-dark-bg-secondary' />
-      <div className='my-16 h-8 w-full animate-pulse rounded-lg bg-zinc-300 dark:bg-dark-bg-tertiary' />
-      <div className='h-4 w-full animate-pulse rounded-lg bg-zinc-200 dark:bg-dark-bg-secondary' />
-      <div className='mt-4 h-4 w-1/2 animate-pulse rounded-lg bg-zinc-200 dark:bg-dark-bg-secondary' />
-      <div className='mt-4 h-4 w-1/3 animate-pulse rounded-lg bg-zinc-200 dark:bg-dark-bg-secondary' />
-      <div className='mt-4 h-4 w-full animate-pulse rounded-lg bg-zinc-200 dark:bg-dark-bg-secondary' />
-      <div className='mt-4 h-4 w-1/4 animate-pulse rounded-lg bg-zinc-200 dark:bg-dark-bg-secondary' />
+      <div className='h-4 w-full animate-pulse rounded-lg bg-muted' />
+      <div className='mt-4 h-4 w-1/2 animate-pulse rounded-lg bg-muted' />
+      <div className='mt-4 h-4 w-1/3 animate-pulse rounded-lg bg-muted' />
+      <div className='mt-4 h-4 w-full animate-pulse rounded-lg bg-muted' />
+      <div className='mt-4 h-4 w-1/4 animate-pulse rounded-lg bg-muted' />
+      <div className='my-16 h-8 w-full animate-pulse rounded-lg bg-muted' />
+      <div className='h-4 w-full animate-pulse rounded-lg bg-muted' />
+      <div className='mt-4 h-4 w-1/2 animate-pulse rounded-lg bg-muted' />
+      <div className='mt-4 h-4 w-1/3 animate-pulse rounded-lg bg-muted' />
+      <div className='mt-4 h-4 w-full animate-pulse rounded-lg bg-muted' />
+      <div className='mt-4 h-4 w-1/4 animate-pulse rounded-lg bg-muted' />
     </div>
   );
 }

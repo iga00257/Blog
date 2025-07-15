@@ -51,7 +51,7 @@ function PageHead(props: Props) {
       />
       <meta name='twitter:card' content='summary_large_image' />
       <link rel='icon' href='/favicon.png' />
-      <meta name='theme-color' content='var(--color-primary-light)' />
+      <meta name='theme-color' content='#ffe8e8' />
     </Head>
   );
 }

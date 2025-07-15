@@ -2,51 +2,6 @@
 @tailwind components;
 @tailwind utilities;
 
-:root {
-  /* 淺色模式色彩 */
-  --color-primary: #ff6b6b;
-  --color-primary-light: #ffe8e8;
-  --color-primary-dark: #e85555;
-  --color-secondary: #4ecdc4;
-  --color-secondary-light: #e8f8f7;
-  --color-secondary-dark: #45b7af;
-  --color-accent: #ffa726;
-  --color-accent-light: #fff3e0;
-  --color-accent-dark: #f57c00;
-  --color-selection: #ffe0b2;
-  --color-highlight: #fff9c4;
-  --color-border: #e0e0e0;
-  --color-gray-warm: #f8f9fa;
-  --color-gray-light: #f5f5f5;
-  --color-white: #ffffff;
-  --color-text-primary: #2c3e50;
-  --color-text-secondary: #5a6c7d;
-  --color-text-muted: #95a5a6;
-  --color-overlay: rgba(0, 0, 0, 0.6);
-  --color-overlay-light: rgba(255, 255, 255, 0.5);
-
-  /* 背景和文字色彩 - 淺色模式 */
-  --color-bg-primary: #ffffff;
-  --color-bg-secondary: #f8f9fa;
-  --color-bg-tertiary: #f5f5f5;
-  --color-text-main: #2c3e50;
-  --color-text-sub: #5a6c7d;
-  --color-text-muted: #95a5a6;
-}
-
-/* 深色模式色彩 */
-.dark {
-  --color-bg-primary: #1a1a1a;
-  --color-bg-secondary: #2d2d2d;
-  --color-bg-tertiary: #404040;
-  --color-text-main: #e5e5e5;
-  --color-text-sub: #b0b0b0;
-  --color-text-muted: #808080;
-  --color-border: #404040;
-  --color-overlay: rgba(255, 255, 255, 0.1);
-  --color-overlay-light: rgba(0, 0, 0, 0.3);
-}
-
 html {
   font-family:
     Inter,
@@ -65,7 +20,7 @@ html {
     Segoe UI Symbol,
     Noto Color Emoji;
   -webkit-font-smoothing: antialiased;
-  @apply bg-white text-text-primary dark:bg-dark-bg dark:text-dark-text-primary;
+  @apply bg-background text-foreground;
   transition:
     background-color 0.3s ease,
     color 0.3s ease;
@@ -84,7 +39,7 @@ html {
 }
 
 #article p {
-  @apply my-8 leading-8 text-text-primary dark:text-dark-text-primary;
+  @apply my-8 leading-8 text-foreground;
 }
 
 pre.mdx-rendered {
@@ -92,7 +47,7 @@ pre.mdx-rendered {
 }
 
 pre.mdx-rendered > div {
-  @apply rounded-md border border-border bg-white !important;
+  @apply rounded-md border bg-white !important;
   font-size: var(--snippet-font-size) !important;
   font-family:
     ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, 'Liberation Mono', 'Courier New',
@@ -132,8 +87,8 @@ pre.mdx-rendered > code {
 }
 
 #article a {
-  @apply mx-1 break-all font-bold text-text-primary transition dark:text-dark-text-primary;
-  background-image: linear-gradient(transparent 70%, var(--color-secondary-light) 30%);
+  @apply mx-1 break-all font-bold text-foreground transition;
+  background-image: linear-gradient(transparent 70%, hsl(var(--secondary)) 30%);
 }
 
 #nprogress .bar {
@@ -143,8 +98,8 @@ pre.mdx-rendered > code {
 
 #nprogress .peg {
   box-shadow:
-    0 0 10px var(--color-secondary),
-    0 0 5px var(--color-primary) !important;
+    0 0 10px hsl(var(--secondary)),
+    0 0 5px hsl(var(--primary)) !important;
 }
 
 #nprogress .spinner {
@@ -152,29 +107,30 @@ pre.mdx-rendered > code {
 }
 
 ::-moz-selection {
-  @apply bg-selection;
+  @apply bg-accent;
 }
 
 ::selection {
-  @apply bg-selection;
+  @apply bg-accent;
 }
 
 @layer base {
   :root {
+    /* Tailwind 系統變數 - 淺色模式 */
     --background: 0 0% 100%;
     --foreground: 0 0% 3.9%;
     --card: 0 0% 100%;
     --card-foreground: 0 0% 3.9%;
     --popover: 0 0% 100%;
     --popover-foreground: 0 0% 3.9%;
-    --primary: 0 100% 71%; /* 使用你的原始 primary 颜色 #ff6b6b */
+    --primary: 0 100% 71%; /* #ff6b6b */
     --primary-foreground: 0 0% 98%;
-    --secondary: 0 0% 96.1%;
-    --secondary-foreground: 0 0% 9%;
+    --secondary: 173 58% 39%; /* #4ecdc4 */
+    --secondary-foreground: 0 0% 98%;
+    --accent: 33 100% 57%; /* #ffa726 */
+    --accent-foreground: 0 0% 98%;
     --muted: 0 0% 96.1%;
     --muted-foreground: 0 0% 45.1%;
-    --accent: 0 0% 96.1%;
-    --accent-foreground: 0 0% 9%;
     --destructive: 0 84.2% 60.2%;
     --destructive-foreground: 0 0% 98%;
     --border: 0 0% 89.8%;
@@ -188,20 +144,21 @@ pre.mdx-rendered > code {
     --radius: 0.5rem;
   }
   .dark {
+    /* Tailwind 系統變數 - 深色模式 */
     --background: 0 0% 3.9%;
     --foreground: 0 0% 98%;
     --card: 0 0% 3.9%;
     --card-foreground: 0 0% 98%;
     --popover: 0 0% 3.9%;
     --popover-foreground: 0 0% 98%;
-    --primary: 0 100% 71%; /* 深色模式下也使用你的 primary 颜色 */
-    --primary-foreground: 0 0% 9%;
-    --secondary: 0 0% 14.9%;
-    --secondary-foreground: 0 0% 98%;
+    --primary: 0 100% 71%; /* 深色模式下保持珊瑚紅 */
+    --primary-foreground: 0 0% 9%; /* 深色模式下使用黑色文字 */
+    --secondary: 173 58% 39%; /* 深色模式下保持薄荷綠 */
+    --secondary-foreground: 0 0% 9%; /* 深色模式下使用黑色文字 */
+    --accent: 33 100% 57%; /* 深色模式下保持溫暖橙色 */
+    --accent-foreground: 0 0% 9%; /* 深色模式下使用黑色文字 */
     --muted: 0 0% 14.9%;
     --muted-foreground: 0 0% 63.9%;
-    --accent: 0 0% 14.9%;
-    --accent-foreground: 0 0% 98%;
     --destructive: 0 62.8% 30.6%;
     --destructive-foreground: 0 0% 98%;
     --border: 0 0% 14.9%;
@@ -212,13 +169,11 @@ pre.mdx-rendered > code {
     --chart-3: 30 80% 55%;
     --chart-4: 280 65% 60%;
     --chart-5: 340 75% 55%;
+    --radius: 0.5rem;
   }
 }
 
 @layer base {
-  * {
-    @apply border-border;
-  }
   body {
     @apply bg-background text-foreground;
   }

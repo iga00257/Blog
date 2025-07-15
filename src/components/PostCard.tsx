@@ -37,10 +37,10 @@ function PostCard(props: Props) {
         >
           {post.title}
         </p>
-        <p className='mt-2 cursor-pointer font-extrabold text-secondary-dark transition-all duration-700 group-hover:translate-x-4'>
+        <p className='mt-2 cursor-pointer font-extrabold text-secondary transition-all duration-700 group-hover:translate-x-4'>
           {post.createdAt.toISOString().split('T')[0]}
         </p>
-        <p className='mt-4 cursor-pointer text-text-secondary transition-all group-hover:opacity-100 dark:text-dark-text-secondary lg:opacity-40'>
+        <p className='mt-4 cursor-pointer text-muted-foreground transition-all group-hover:opacity-100 lg:opacity-40'>
           {post.content.substring(0, 100)} ...
         </p>
       </div>

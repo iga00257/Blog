@@ -6,7 +6,7 @@ import SelectQuestion from './SelectQuestion';
 
 function Note(props: any) {
   return (
-    <NoteRaw {...props} style={{ margin: '24px 0' }}>
+    <NoteRaw {...props} style={{ margin: '24px 0' }} className='text-primary'>
       {props.children}
     </NoteRaw>
   );

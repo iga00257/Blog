@@ -8,7 +8,7 @@ interface Props {
 
 function SelectQuestion(props: Props) {
   return (
-    <div className='mdx-component my-12 w-full rounded-lg bg-zinc-50 p-4 dark:bg-dark-bg-secondary'>
+    <div className='mdx-component my-12 w-full rounded-lg bg-muted p-4'>
       <div className='mb-4'>
         <h3 className='text-lg font-semibold'>{props.questionName}</h3>
         <p className='text-sm text-muted-foreground'>{props.question}</p>

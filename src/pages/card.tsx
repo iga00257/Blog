@@ -5,7 +5,7 @@ import SocialLinks from '../components/SocialLinks';
 
 export default function Card() {
   return (
-    <div className='flex h-screen w-full flex-col justify-center bg-zinc-50 pb-32 pt-16 dark:bg-dark-bg-secondary'>
+    <div className='flex h-screen w-full flex-col justify-center bg-muted pb-32 pt-16'>
       <Head>
         <title>劉穎多 Derrick Liu 的電子名片</title>
         <meta
